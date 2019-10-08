@@ -12,12 +12,22 @@
  */
 
 #include <iostream>
+#include "engine.h"
+
 using namespace std;
 
 /*
  * 
  */
 int main(int argc, char** argv) {
+
+	Class01 c{};
+
+#ifdef _CULO
+	cout << "culo" << endl;
+#endif // _CULO
+
+
 	cout << "ola" << endl;
     return 0;
 }
