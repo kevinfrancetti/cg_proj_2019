@@ -4,6 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>class01.h</itemPath>
+      <itemPath>engine.h</itemPath>
+      <itemPath>engine_definitions.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -12,7 +15,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.cpp</itemPath>
+      <itemPath>class01.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -28,31 +31,24 @@
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="Debug" type="1">
+    <conf name="Debug" type="2">
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
-        <ccTool>
-          <incDir>
-            <pElem>../cg_engine</pElem>
-          </incDir>
-        </ccTool>
-        <linkerTool>
-          <linkerAddLib>
-            <pElem>../cg_engine/dist/Debug/GNU-Linux</pElem>
-          </linkerAddLib>
-          <linkerLibItems>
-            <linkerLibLibItem>cg_engine</linkerLibLibItem>
-          </linkerLibItems>
-        </linkerTool>
       </compileType>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="class01.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="class01.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="engine.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="engine_definitions.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
-    <conf name="Release" type="1">
+    <conf name="Release" type="2">
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
@@ -72,7 +68,13 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="class01.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="class01.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="engine.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="engine_definitions.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
