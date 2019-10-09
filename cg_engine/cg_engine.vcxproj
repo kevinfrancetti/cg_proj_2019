@@ -23,7 +23,7 @@
     <ProjectGuid>{AA27E8A1-DD5E-41BE-A90B-018E85B60755}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>cgengine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
