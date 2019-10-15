@@ -22,6 +22,7 @@ using namespace std;
 int main(int argc, char** argv) {
 
 	Class01 c{};
+	c.exercise_01();
 
 	cout << "ola" << endl;
     return 0;
