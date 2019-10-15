@@ -38,16 +38,38 @@ void LIB_API Class01::exercise_01(){
 				 0.0f, 1.0f, 0.0f,
 				 30.0f, 15.0f, 1.0f};
 	
-	glm::vec3 aplusb = a + b;
-	glm::vec3 aminusb = a - b;
-	glm::vec3 atimesb = a * b;
-	int miao = glm::dot(a, b);
+	glm::vec3 a_plus_b = a + b;
+	glm::vec3 a_minus_b = a - b;
+	glm::vec3 a_times_b = a * b;
+	glm::vec3 a_cross_b = glm::cross(a, b);
+	glm::vec3 b_normalized = glm::normalize(b);
+	glm::vec3 a_transformed_A = A * a;
+	glm::vec3 A_transformed_a = a * A;
+	glm::mat3 AB = A*B;
+	glm::mat3 BA = B*A;
+	glm::mat3 A_t_B = glm::transpose(A)*B;
+	glm::vec3 B_inv_b = glm::inverse(B)*b;
 	
-	cout << GLM_VERSION << endl;
-	cout << miao << endl;
-	cout << glm::to_string(aplusb) << endl;
-	cout << glm::to_string(aminusb) << endl;
-	cout << glm::to_string(atimesb) << endl;
+	float a_dot_b = glm::dot(a, b);
+	
+	cout << "GLM VERSION: " <<GLM_VERSION << endl;
+	cout << "Vector a: " << glm::to_string(a) << endl;
+	cout << "Vector b: " << glm::to_string(a) << endl;
+	cout << "a+b: " << glm::to_string(a_plus_b) << endl;
+	cout << "a-b: " << glm::to_string(a_minus_b) << endl;
+	cout << "a*b (not dot): " << glm::to_string(a_times_b) << endl;
+	cout << "dot(a,b): " << a_dot_b << endl;
+	cout << "cross(a,b): " << glm::to_string(a_cross_b) << endl;
+	cout << "a transformed by A: " << glm::to_string(a_transformed_A) << endl;
+	cout << "A transformed by a: " << glm::to_string(A_transformed_a) << endl;//!!!
+	cout << "AB: " << glm::to_string(AB) << endl;
+	cout << "BA: " << glm::to_string(BA) << endl;
+	cout << "A_trans B: " << glm::to_string(A_t_B) << endl;
+	cout << "B_inverse_b: " << glm::to_string(B_inv_b) << endl;
+	
+	
+
+	
 }
 
 
