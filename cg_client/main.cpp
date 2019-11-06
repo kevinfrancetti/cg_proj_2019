@@ -21,8 +21,10 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
+
 	Class01 c{};
-	c.exercise_01();
+	c.exercise_02();
+	//c.test_free_glut(argc, argv);
 
 	cout << "ola" << endl;
     return 0;
