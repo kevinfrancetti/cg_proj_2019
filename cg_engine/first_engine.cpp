@@ -13,6 +13,7 @@
 #include <iostream>
 #include "first_engine.h"
 #include "engine.h"
+#include "cube.h"
 #include <GL/freeglut.h>
 
 
@@ -25,6 +26,7 @@ GLfloat first_vertex[3];
 GLfloat second_vertex[3];
 GLfloat third_vertex[3];
 GLfloat* selectet_vertex = first_vertex;
+Cube c{};
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
@@ -38,9 +40,14 @@ void displayCube(float edge)
 {
    float size = edge / 2.0f;
 
+   faceColor[0][0] = 255;
+   faceColor[0][1] = 0;
+   faceColor[0][2] = 255;
+   
    // Back:
    glBegin(GL_TRIANGLE_STRIP);
       glColor3ub(faceColor[0][0], faceColor[0][1], faceColor[0][2]);
+	  //glColor3f(1.0f, 0.0f, 0.0f);
          glVertex3f(size, -size, -size);
          glVertex3f(-size, -size, -size);
          glVertex3f(size, size, -size);
@@ -118,8 +125,6 @@ void displayTriangle(){
 
 
 void displaySquare(float size){
-	
-	
 	glBegin(GL_TRIANGLE_STRIP);
 	glColor3f(red, 0.0f, 0.0f);
 	glVertex3f(-size, -size, z_cord);
@@ -129,9 +134,6 @@ void displaySquare(float size){
 	glVertex3f(size, -size, z_cord);
 	glVertex3f(size, size, z_cord);
 	glEnd();
-	
-	
-	
 }
 
 
@@ -148,9 +150,10 @@ void displayCallback(){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(glm::value_ptr(f));
 	
-	displayTriangle();
-	displaySquare(20);
+	//displayTriangle();
+	//displaySquare(20);
 	//displayCube(20);
+	c.display(20);
 	// Swap this context's buffer:     
 	glutSwapBuffers();   
 	

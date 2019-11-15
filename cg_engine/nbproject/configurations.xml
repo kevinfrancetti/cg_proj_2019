@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>class01.h</itemPath>
+      <itemPath>cube.h</itemPath>
       <itemPath>engine.h</itemPath>
       <itemPath>first_engine.h</itemPath>
     </logicalFolder>
@@ -16,6 +17,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>class01.cpp</itemPath>
+      <itemPath>cube.cpp</itemPath>
       <itemPath>first_engine.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -49,6 +51,10 @@
       <item path="class01.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="class01.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cube.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cube.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="engine.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -86,6 +92,10 @@
       <item path="class01.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="class01.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cube.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cube.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="engine.h" ex="false" tool="3" flavor2="0">
       </item>

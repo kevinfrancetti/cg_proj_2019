@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/class01.o \
+	${OBJECTDIR}/cube.o \
 	${OBJECTDIR}/first_engine.o
 
 
@@ -67,6 +68,11 @@ ${OBJECTDIR}/class01.o: class01.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/class01.o class01.cpp
+
+${OBJECTDIR}/cube.o: cube.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cube.o cube.cpp
 
 ${OBJECTDIR}/first_engine.o: first_engine.cpp
 	${MKDIR} -p ${OBJECTDIR}
