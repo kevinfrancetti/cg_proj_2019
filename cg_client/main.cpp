@@ -13,7 +13,6 @@
 
 #include <iostream>
 #include "engine.h"
-
 using namespace std;
 
 /*
@@ -21,10 +20,14 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-
-	Class01 c{};
-	c.exercise_02();
-	//c.test_free_glut(argc, argv);
+	for(int i = 0; i < argc; i++){
+		cout << argv[i] << endl;
+	}
+	
+	First_engine eng{};
+	eng.run(&argc, argv);
+	
+	
 
 	cout << "ola" << endl;
     return 0;

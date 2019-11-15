@@ -1,5 +1,4 @@
 #pragma once
-//#include "engine_definitions.h" #togliere
 #include "engine.h"
 
 class LIB_API Class01 {
@@ -9,5 +8,6 @@ public:
 	void exercise_01();
 	void exercise_02();
 	void test_free_glut(int&, char**);
+	void merda();
 };
 
