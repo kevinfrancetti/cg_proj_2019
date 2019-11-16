@@ -18,6 +18,8 @@
 
 
 //GLOBALS//
+float gNear = 1.0f;
+float gFar = 100.0f;
 float red = 1.0f; 
 float green = 1.0f; 
 float blue = 1.0f; 
@@ -26,7 +28,7 @@ GLfloat first_vertex[3];
 GLfloat second_vertex[3];
 GLfloat third_vertex[3];
 GLfloat* selectet_vertex = first_vertex;
-Cube c{};
+Cube gCube{};
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
@@ -141,19 +143,22 @@ void displayCallback(){
 	// Clear the screen:         
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      
 	
+	/*
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -75.0f));
 	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 f = translation *  rotationY * rotationX;
+	*/ 
 	//f = glm::mat4{1.0f};
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(glm::value_ptr(f));
+	//glLoadMatrixf(glm::value_ptr(f));
+	glLoadMatrixf(glm::value_ptr(gCube.GetMatrixModelView()));
 	
 	//displayTriangle();
 	//displaySquare(20);
 	//displayCube(20);
-	c.display(20);
+	gCube.display(50);
 	// Swap this context's buffer:     
 	glutSwapBuffers();   
 	
@@ -161,43 +166,64 @@ void displayCallback(){
 	glutPostWindowRedisplay(glutGetWindow());
 }
 
+void set_projection_matrix(){
+	float width = (float) glutGet(GLUT_WINDOW_WIDTH);
+	float height = (float) glutGet(GLUT_WINDOW_HEIGHT);
+	glViewport(0, 0, width, height);
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, gNear, gFar);
+	glm::mat4 ortho = glm::ortho((float) -width / 2.0f, (float) width/2.0f, (float) -height/2.0f, (float) height / 2.0f, gNear, gFar);
+	glMatrixMode(GL_PROJECTION);
+	//glLoadMatrixf(glm::value_ptr(projection));
+	glLoadMatrixf(glm::value_ptr(ortho));
+	glMatrixMode(GL_MODELVIEW);
+}
+
 void reshapeCallback(int width, int height){
 	// For your information...:
 	cout << "[reshape func invoked]" << endl;
 	cout << "width: " << width << " height: " << height << endl;
-	glViewport(0, 0, width, height);
-	float left = 0.0f;
-	float right = 0.0f;
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, 1.0f, 100.0f);
-	glm::mat4 ortho = glm::ortho((float) -width / 2.0f, (float) width/2.0f, (float) -height/2.0f, (float) height / 2.0f, (float) 0, (float) 45);
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(projection));
-	glMatrixMode(GL_MODELVIEW);
+	//cout << "widthByeGlut: " << glutGet(GLUT_WINDOW_WIDTH) << " heightByeGlut: " << glutGet(GLUT_WINDOW_HEIGHT) << endl;
+
+	set_projection_matrix();
+	
    	glutPostWindowRedisplay(glutGetWindow());
 }
 
 void specialCallback(int key, int mouse_x, int mouse_y){
 	
-	float step = 4.0f;
+	float step = 10.0f;
 	switch(key){
+		case GLUT_KEY_LEFT : gCube.IncrementAngleY(-step); break;
+		case GLUT_KEY_RIGHT: gCube.IncrementAngleY(step); break;
+		case GLUT_KEY_UP : gCube.IncrementAngleX(step); break;
+		case GLUT_KEY_DOWN : gCube.IncrementAngleX(-step); break;
+		
+		/*
 		case GLUT_KEY_LEFT : selectet_vertex[0] -= step; break;
 		case GLUT_KEY_RIGHT: selectet_vertex[0] += step; break;
 		case GLUT_KEY_UP: selectet_vertex[1] += step; break;
 		case GLUT_KEY_DOWN : selectet_vertex[1] -= step; break;
 		case GLUT_KEY_PAGE_UP: selectet_vertex[2] += step; break; // INVERTED FOR Z!!
 		case GLUT_KEY_PAGE_DOWN: selectet_vertex[2] -= step; break;//INVERTED FOR Z!!
+		*/ 
 	}
 	
-	cout << "X: " << selectet_vertex[0] << endl;
-	cout << "Y: " << selectet_vertex[1] << endl;
-	cout << "Z: " << selectet_vertex[2] << endl;
+	cout << "AngleX: " <<gCube.mAngleX << endl;
+	cout << "AngleY: " <<gCube.mAngleY << endl;
+	
 	cout << "mouseX: " << mouse_x << "mouseY: " << mouse_y << endl;
 	
 	glutPostWindowRedisplay(glutGetWindow());
 }
 
 void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
+
+	float step = 5.0f;
 	switch(key){
+		case 'n' : gNear -= step; set_projection_matrix(); break;
+		case 'N' : gNear += step; set_projection_matrix(); break;
+		case 'f' : gFar -= step; set_projection_matrix(); break;
+		case 'F' : gFar += step; set_projection_matrix(); break;
 		case 'R' : red += 0.01f; break;
 		case 'r' : red -= 0.01f; break;
 		case 'G' : green += 0.01f; break;
@@ -211,10 +237,19 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 		case 'z' : z_cord -= 1.0f; break;
 		case 'Z' : z_cord += 1.0f; break;
 		case '1' : selectet_vertex = first_vertex; break; 
-		case '2' : selectet_vertex = second_vertex; break;
+		//case '2' : selectet_vertex = second_vertex; break;
 		case '3' : selectet_vertex = third_vertex; break;
+
+		case '4' : gCube.IncrementCordX(-step); break;
+		case '6' : gCube.IncrementCordX(step); break;
+		case '8' : gCube.IncrementCordY(step); break;
+		case '2' : gCube.IncrementCordY(-step); break;
+		case '7' : gCube.IncrementCordZ(-step); break;
+		case '9' : gCube.IncrementCordZ(step); break;
+		
 	}
-	cout << "Z: " << z_cord << endl;
+	cout << "near: " << gNear << endl;
+	cout << "far: " << gFar << endl;
 	glutPostWindowRedisplay(glutGetWindow());
 }
 

@@ -16,17 +16,32 @@
 
 #include "engine.h"
 
+
+
 class LIB_API Cube {
 public:
     Cube();
     Cube(const Cube& orig);
 	void display(float edge);
     virtual ~Cube();
+	
+	void IncrementAngleX(float incrementValue);
+	void IncrementAngleY(float incrementValue);
+	void IncrementCordX(float incrementValue);
+	void IncrementCordY(float incrementValue);
+	void IncrementCordZ(float incrementValue);
+	
+	glm::mat4& GetMatrixModelView();
+	
+	float mAngleX = 0;
+	float mAngleY = 0;
+	
 private:
 	void randomize_colors();
-	glm::mat4 m_model_view;
+	glm::mat4 mModelViewMatrix;
 	glm::mat4 m_porjection;
-	unsigned char m_face_colors[6][3];
+	glm::vec3 mPosition;
+	unsigned char mFaceColors[6][3];
 };
 
 #endif /* CUBE_H */
