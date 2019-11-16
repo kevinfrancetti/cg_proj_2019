@@ -243,16 +243,16 @@ void init_glut(int* argc, char** argv){
 	
 }
 
-LIB_API First_engine::First_engine() {
+First_engine::First_engine() {
 }
 
-LIB_API First_engine::First_engine(const First_engine& orig) {
+First_engine::First_engine(const First_engine& orig) {
 }
 
-LIB_API First_engine::~First_engine() {
+First_engine::~First_engine() {
 }
 
-void LIB_API First_engine::run(int* argc, char** argv){
+void First_engine::run(int* argc, char** argv){
 	init_globals();
 	init_glut(argc, argv);	
 } 

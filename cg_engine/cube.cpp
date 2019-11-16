@@ -14,10 +14,11 @@
 #include "cube.h"
 #include <iostream>
 #include <GL/freeglut.h>
+#include <time.h>
 
 using namespace std;
 
-void LIB_API Cube::randomize_colors(){
+void Cube::randomize_colors(){
 	int col = sizeof(m_face_colors[0]);
 	int row = sizeof(m_face_colors)/col;
 	srand(time(0));
@@ -37,7 +38,7 @@ Cube::Cube() {
 }
 
 
-void LIB_API Cube::display(float edge){
+void Cube::display(float edge){
 	float size = edge / 2.0f;
 	
    // Back:

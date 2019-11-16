@@ -88,7 +88,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;CGENGINE_EXPORTS;_WINDOWS;_USRDLL;_ENGINE_EXPORTS;FREEGLUT_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;CGENGINE_EXPORTS;_WINDOWS;_USRDLL;_COMPILING_DLL;FREEGLUT_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -143,12 +143,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="class01.h" />
+    <ClInclude Include="cube.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="engine_definitions.h" />
     <ClInclude Include="first_engine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="class01.cpp" />
+    <ClCompile Include="cube.cpp" />
     <ClCompile Include="first_engine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

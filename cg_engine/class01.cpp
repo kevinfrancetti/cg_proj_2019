@@ -5,20 +5,20 @@
 
 using namespace std;
 
-LIB_API Class01::Class01() {
+Class01::Class01() {
 }
 
 
-LIB_API Class01::~Class01() {
+Class01::~Class01() {
 }
 
 
-void LIB_API Class01::merda(){
+void Class01::merda(){
 	cout << "merda" << endl;
 }
 
 
-void LIB_API Class01::exercise_01() {
+void Class01::exercise_01() {
 	
 	
 	glm::vec3 a{1.0f, 0.0f, -1.0f};
@@ -92,7 +92,7 @@ void printVertexes(const glm::vec4* in, int size,string message){
 	
 }
 
-void LIB_API Class01::exercise_02() {
+void Class01::exercise_02() {
 	cout << "Exercise_2" << endl;
 	
 	//Setup triangle vertexes
