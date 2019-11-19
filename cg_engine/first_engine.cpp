@@ -155,10 +155,10 @@ void displayCallback(){
 	//glLoadMatrixf(glm::value_ptr(f));
 	glLoadMatrixf(glm::value_ptr(gCube.GetMatrixModelView()));
 	
-	//displayTriangle();
+	displayTriangle();
 	//displaySquare(20);
 	//displayCube(20);
-	gCube.display(50);
+	//gCube.display(50);
 	// Swap this context's buffer:     
 	glutSwapBuffers();   
 	
@@ -174,7 +174,7 @@ void set_projection_matrix(){
 	glm::mat4 ortho = glm::ortho((float) -width / 2.0f, (float) width/2.0f, (float) -height/2.0f, (float) height / 2.0f, gNear, gFar);
 	glMatrixMode(GL_PROJECTION);
 	//glLoadMatrixf(glm::value_ptr(projection));
-	glLoadMatrixf(glm::value_ptr(ortho));
+	glLoadMatrixf(glm::value_ptr(projection));
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -269,6 +269,8 @@ void init_glut(int* argc, char** argv){
 	glutKeyboardFunc(keyboardCallback);
 	glutSpecialFunc(specialCallback);
 	
+	glFrontFace(GL_CW);
+	glEnable(GL_CULL_FACE);
    	glClearColor(1.0f, 0.6f, 0.1f, 1.0f); // RGBA components
 	glEnable(GL_DEPTH_TEST);
 	
