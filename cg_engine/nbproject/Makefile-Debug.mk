@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/class01.o \
 	${OBJECTDIR}/cube.o \
-	${OBJECTDIR}/first_engine.o
+	${OBJECTDIR}/first_engine.o \
+	${OBJECTDIR}/object.o
 
 
 # C Compiler Flags
@@ -78,6 +79,11 @@ ${OBJECTDIR}/first_engine.o: first_engine.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/first_engine.o first_engine.cpp
+
+${OBJECTDIR}/object.o: object.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/object.o object.cpp
 
 # Subprojects
 .build-subprojects:

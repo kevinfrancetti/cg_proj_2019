@@ -14,6 +14,7 @@
 #include "first_engine.h"
 #include "engine.h"
 #include "cube.h"
+#include "object.h"
 #include <GL/freeglut.h>
 
 
@@ -290,6 +291,14 @@ First_engine::~First_engine() {
 }
 
 void First_engine::run(int* argc, char** argv){
+
+
+	Object o1;
+	Object o2 = o1;
+	cout << o1.getId() << endl;
+	cout << o2.getId() << endl;
+
+	
 	init_globals();
 	init_glut(argc, argv);	
 } 
