@@ -18,9 +18,6 @@
 
 using namespace std;
 
-
-
-
 void Cube::randomize_colors(){
 	int col = sizeof(mFaceColors[0]);
 	int row = sizeof(mFaceColors)/col;

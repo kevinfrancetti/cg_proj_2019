@@ -15,6 +15,7 @@
 #include "engine.h"
 #include "cube.h"
 #include "object.h"
+#include "meshCube.h"
 #include <GL/freeglut.h>
 
 
@@ -29,7 +30,9 @@ GLfloat first_vertex[3];
 GLfloat second_vertex[3];
 GLfloat third_vertex[3];
 GLfloat* selectet_vertex = first_vertex;
-Cube gCube{};
+Cube* gpCube{};
+Cube gCube1{};
+Cube gCube2{};
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
@@ -39,71 +42,9 @@ unsigned char faceColor[6][3];
 
 using namespace std;
 
-void displayCube(float edge)
-{
-   float size = edge / 2.0f;
-
-   faceColor[0][0] = 255;
-   faceColor[0][1] = 0;
-   faceColor[0][2] = 255;
-   
-   // Back:
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(faceColor[0][0], faceColor[0][1], faceColor[0][2]);
-	  //glColor3f(1.0f, 0.0f, 0.0f);
-         glVertex3f(size, -size, -size);
-         glVertex3f(-size, -size, -size);
-         glVertex3f(size, size, -size);
-         glVertex3f(-size, size, -size);
-   glEnd();
-
-   // Front:          
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(faceColor[1][0], faceColor[1][1], faceColor[1][2]);
-         glVertex3f(-size, -size, size);
-         glVertex3f(size, -size, size);
-         glVertex3f(-size, size, size);
-         glVertex3f(size, size, size);
-   glEnd();
-
-   // Left:       
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(faceColor[2][0], faceColor[2][1], faceColor[2][2]);
-         glVertex3f(-size, size, -size);
-         glVertex3f(-size, -size, -size);
-         glVertex3f(-size, size, size);
-         glVertex3f(-size, -size, size);
-   glEnd();
-
-   // Right:          
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(faceColor[3][0], faceColor[3][1], faceColor[3][2]);
-         glVertex3f(size, -size, -size);
-         glVertex3f(size, size, -size);
-         glVertex3f(size, -size, size);
-         glVertex3f(size, size, size);
-   glEnd();
-
-   // Bottom:         
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(faceColor[4][0], faceColor[4][1], faceColor[4][2]);
-         glVertex3f(-size, -size, -size);
-         glVertex3f(size, -size, -size);
-         glVertex3f(-size, -size, size);
-         glVertex3f(size, -size, size);
-   glEnd();
-
-   // Top:        
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(faceColor[4][0], faceColor[4][1], faceColor[4][2]);
-         glVertex3f(size, size, -size);
-         glVertex3f(-size, size, -size);
-         glVertex3f(size, size, size);
-         glVertex3f(-size, size, size);
-   glEnd();
-}
 
 void init_globals(){
+	gpCube = &gCube1;
 	first_vertex[0] = 15;
 	first_vertex[1] = 0;
 	first_vertex[2] = 0;
@@ -143,23 +84,19 @@ void displaySquare(float size){
 void displayCallback(){
 	// Clear the screen:         
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      
-	
-	/*
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -75.0f));
-	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
-	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 f = translation *  rotationY * rotationX;
-	*/ 
-	//f = glm::mat4{1.0f};
 
 	glMatrixMode(GL_MODELVIEW);
 	//glLoadMatrixf(glm::value_ptr(f));
-	glLoadMatrixf(glm::value_ptr(gCube.GetMatrixModelView()));
-	
-	displayTriangle();
+	glLoadMatrixf(glm::value_ptr(gCube1.GetMatrixModelView()));
+	gCube1.display(20);
+	glLoadMatrixf(glm::value_ptr(gCube2.GetMatrixModelView()));
+	gCube2.display(30);
+
+	//displayTriangle();
 	//displaySquare(20);
 	//displayCube(20);
-	//gCube.display(50);
+	//gpCube->display(50);
+	//gCube2.display(30);
 	// Swap this context's buffer:     
 	glutSwapBuffers();   
 	
@@ -194,10 +131,10 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 	
 	float step = 10.0f;
 	switch(key){
-		case GLUT_KEY_LEFT : gCube.IncrementAngleY(-step); break;
-		case GLUT_KEY_RIGHT: gCube.IncrementAngleY(step); break;
-		case GLUT_KEY_UP : gCube.IncrementAngleX(step); break;
-		case GLUT_KEY_DOWN : gCube.IncrementAngleX(-step); break;
+		case GLUT_KEY_LEFT : gpCube->IncrementAngleY(-step); break;
+		case GLUT_KEY_RIGHT: gpCube->IncrementAngleY(step); break;
+		case GLUT_KEY_UP : gpCube->IncrementAngleX(step); break;
+		case GLUT_KEY_DOWN : gpCube->IncrementAngleX(-step); break;
 		
 		/*
 		case GLUT_KEY_LEFT : selectet_vertex[0] -= step; break;
@@ -209,8 +146,8 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 		*/ 
 	}
 	
-	cout << "AngleX: " <<gCube.mAngleX << endl;
-	cout << "AngleY: " <<gCube.mAngleY << endl;
+	cout << "AngleX: " <<gpCube->mAngleX << endl;
+	cout << "AngleY: " <<gpCube->mAngleY << endl;
 	
 	cout << "mouseX: " << mouse_x << "mouseY: " << mouse_y << endl;
 	
@@ -241,13 +178,15 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 		//case '2' : selectet_vertex = second_vertex; break;
 		case '3' : selectet_vertex = third_vertex; break;
 
-		case '4' : gCube.IncrementCordX(-step); break;
-		case '6' : gCube.IncrementCordX(step); break;
-		case '8' : gCube.IncrementCordY(step); break;
-		case '2' : gCube.IncrementCordY(-step); break;
-		case '7' : gCube.IncrementCordZ(-step); break;
-		case '9' : gCube.IncrementCordZ(step); break;
-		
+		case '4' : gpCube->IncrementCordX(-step); break;
+		case '6' : gpCube->IncrementCordX(step); break;
+		case '8' : gpCube->IncrementCordY(step); break;
+		case '2' : gpCube->IncrementCordY(-step); break;
+		case '7' : gpCube->IncrementCordZ(-step); break;
+		case '9' : gpCube->IncrementCordZ(step); break;
+
+		case 'x': gpCube = &gCube1; break;
+		case 'X': gpCube = &gCube2; break;
 	}
 	cout << "near: " << gNear << endl;
 	cout << "far: " << gFar << endl;
@@ -270,8 +209,10 @@ void init_glut(int* argc, char** argv){
 	glutKeyboardFunc(keyboardCallback);
 	glutSpecialFunc(specialCallback);
 	
+	/*
 	glFrontFace(GL_CW);
 	glEnable(GL_CULL_FACE);
+	*/
    	glClearColor(1.0f, 0.6f, 0.1f, 1.0f); // RGBA components
 	glEnable(GL_DEPTH_TEST);
 	
@@ -297,6 +238,10 @@ void First_engine::run(int* argc, char** argv){
 	Object o2 = o1;
 	cout << o1.getId() << endl;
 	cout << o2.getId() << endl;
+	MeshCube m1;
+	MeshCube m2;
+	cout << m1.getId() << endl;
+	cout << m2.getId() << endl;
 
 	
 	init_globals();

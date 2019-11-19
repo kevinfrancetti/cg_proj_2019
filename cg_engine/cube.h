@@ -38,7 +38,7 @@ public:
 	
 private:
 	void randomize_colors();
-	glm::mat4 mModelViewMatrix;
+	glm::mat4 mModelViewMatrix{ 1.0f };
 	glm::mat4 m_porjection;
 	glm::vec3 mPosition;
 	unsigned char mFaceColors[6][3];

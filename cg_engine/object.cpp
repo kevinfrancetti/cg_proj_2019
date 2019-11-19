@@ -29,6 +29,7 @@ Object::Object(const Object& orig) {
 }
 
 Object::~Object() {
+	cout << "[Object destructor]" << endl;
 }
 
 void Object::render(){

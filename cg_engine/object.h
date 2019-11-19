@@ -24,7 +24,6 @@ public:
 	
 	virtual void render();
 	int getId();
-private:
 	static int mIdGenerator;
 	int mId;
 	
