@@ -14,7 +14,9 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-class Object {
+#include "engine.h"
+
+class LIB_API Object {
 public:
     Object();
     Object(const Object& orig);
