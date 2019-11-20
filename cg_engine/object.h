@@ -21,8 +21,8 @@ public:
     virtual ~Object();
 	
 	virtual void render();
-private:
 	int getId();
+private:
 	static int mIdGenerator;
 	int mId;
 	

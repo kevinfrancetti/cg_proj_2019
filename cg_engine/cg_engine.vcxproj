@@ -148,6 +148,7 @@
     <ClInclude Include="engine_definitions.h" />
     <ClInclude Include="first_engine.h" />
     <ClInclude Include="meshCube.h" />
+    <ClInclude Include="node.h" />
     <ClInclude Include="object.h" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="first_engine.cpp" />
     <ClCompile Include="meshCube.cpp" />
+    <ClCompile Include="node.cpp" />
     <ClCompile Include="object.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
