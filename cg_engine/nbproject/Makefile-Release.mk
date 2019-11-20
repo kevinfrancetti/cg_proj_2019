@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/cube.o \
 	${OBJECTDIR}/first_engine.o \
 	${OBJECTDIR}/meshCube.o \
+	${OBJECTDIR}/node.o \
 	${OBJECTDIR}/object.o
 
 
@@ -85,6 +86,11 @@ ${OBJECTDIR}/meshCube.o: meshCube.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/meshCube.o meshCube.cpp
+
+${OBJECTDIR}/node.o: node.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/node.o node.cpp
 
 ${OBJECTDIR}/object.o: object.cpp
 	${MKDIR} -p ${OBJECTDIR}

@@ -14,8 +14,6 @@
 #ifndef FIRST_ENGINE_H
 #define FIRST_ENGINE_H
 
-#include "engine.h"
-
 class LIB_API First_engine {
 public:
     First_engine();

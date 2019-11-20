@@ -14,11 +14,8 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "engine.h"
 
-
-
-class LIB_API Cube {
+class LIB_API Cube : public Node {
 public:
     Cube();
     Cube(const Cube& orig);

@@ -11,7 +11,7 @@
  * Created on November 15, 2019, 8:12 PM
  */
 
-#include "cube.h"
+#include "engine.h"
 #include <iostream>
 #include <GL/freeglut.h>
 #include <time.h>
@@ -26,7 +26,6 @@ void Cube::randomize_colors(){
 	for(int i = 0; i < row; i++)
 		for(int j = 0; j < col; j++)
 			mFaceColors[i][j] = rand() % 255;
-	
 }
 
 void Cube::IncrementAngleX(float incrementValue){

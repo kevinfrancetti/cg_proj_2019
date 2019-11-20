@@ -12,12 +12,11 @@
  */
 
 #include <iostream>
-#include "object.h"
+#include "engine.h"
 
 using namespace std;
 
 int Object::mIdGenerator = 0;
-
 
 Object::Object() {
 	cout << "[Object constructor]" << endl;

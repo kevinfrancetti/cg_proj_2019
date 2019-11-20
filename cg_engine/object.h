@@ -14,8 +14,6 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "engine.h"
-
 class LIB_API Object {
 public:
     Object();
@@ -23,6 +21,7 @@ public:
     virtual ~Object();
 	
 	virtual void render();
+private:
 	int getId();
 	static int mIdGenerator;
 	int mId;

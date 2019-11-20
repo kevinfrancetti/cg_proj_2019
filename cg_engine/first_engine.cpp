@@ -11,11 +11,7 @@
  * Created on November 12, 2019, 6:17 PM
  */
 #include <iostream>
-#include "first_engine.h"
 #include "engine.h"
-#include "cube.h"
-#include "object.h"
-#include "meshCube.h"
 #include <GL/freeglut.h>
 
 
@@ -215,7 +211,12 @@ void init_glut(int* argc, char** argv){
 	*/
    	glClearColor(1.0f, 0.6f, 0.1f, 1.0f); // RGBA components
 	glEnable(GL_DEPTH_TEST);
+
 	
+	/*
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	*/
 	cout << glGetString(GL_VERSION) << endl;
 	glutMainLoop();
 	cout << "EXIT" << endl;

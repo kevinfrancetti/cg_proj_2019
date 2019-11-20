@@ -1,7 +1,6 @@
 #include <iostream>
-#include "engine.h"
-#include "class01.h"
 #include <GL/freeglut.h>
+#include "engine.h"
 
 using namespace std;
 
