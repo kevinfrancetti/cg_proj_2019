@@ -23,6 +23,6 @@ Node::~Node() {
 }
 
 
-void Node::loadModelMatrix( ){
+void Node::loadModelMatrix(glm::mat4 m){
 }
 
