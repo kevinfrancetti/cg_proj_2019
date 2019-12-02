@@ -14,6 +14,9 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "glm/fwd.hpp"
+
+
 
 class Node : Object{
 public:
@@ -21,7 +24,7 @@ public:
     Node(const Node& orig);
     virtual ~Node();
 
-	virtual void loadModelMatrix();
+	virtual void loadModelMatrix(glm::mat4);
 	
 private:
 	glm::mat4 model{1.0f};
