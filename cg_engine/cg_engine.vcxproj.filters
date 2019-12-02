@@ -18,13 +18,7 @@
     <ClInclude Include="class01.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine_definitions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="first_engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cube.h">

@@ -11,9 +11,14 @@
  * Created on November 20, 2019, 4:16 PM
  */
 
-#include "engine.h"
 
-Node::Node() {
+#include "engine.h"
+#include <iostream>
+
+using namespace std;
+
+Node::Node(){
+	cout << "HELLO NODE" << endl;
 }
 
 Node::Node(const Node& orig) {

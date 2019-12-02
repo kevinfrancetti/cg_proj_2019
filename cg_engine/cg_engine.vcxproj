@@ -117,12 +117,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;CGENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;CGENGINE_EXPORTS;_WINDOWS;_USRDLL;_COMPILING_DLL;FREEGLUT_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\freeglut\lib\x64\Debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,8 +147,6 @@
     <ClInclude Include="class01.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="engine.h" />
-    <ClInclude Include="engine_definitions.h" />
-    <ClInclude Include="first_engine.h" />
     <ClInclude Include="meshCube.h" />
     <ClInclude Include="node.h" />
     <ClInclude Include="object.h" />

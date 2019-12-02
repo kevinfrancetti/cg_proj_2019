@@ -218,6 +218,8 @@ void init_glut(int* argc, char** argv){
 	glEnable(GL_LIGHT0);
 	*/
 	cout << glGetString(GL_VERSION) << endl;
+
+	
 	glutMainLoop();
 	cout << "EXIT" << endl;
 	
@@ -234,16 +236,18 @@ First_engine::~First_engine() {
 
 void First_engine::run(int* argc, char** argv){
 
-
+	/*
 	Object o1;
 	Object o2 = o1;
 	cout << o1.getId() << endl;
 	cout << o2.getId() << endl;
+	*/
+	/*
 	MeshCube m1;
 	MeshCube m2;
 	cout << m1.getId() << endl;
 	cout << m2.getId() << endl;
-
+	*/
 	
 	init_globals();
 	init_glut(argc, argv);	

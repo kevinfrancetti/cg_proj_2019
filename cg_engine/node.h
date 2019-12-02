@@ -16,9 +16,7 @@
 
 #include "glm/fwd.hpp"
 
-
-
-class Node : Object{
+class Node : public Object{
 public:
     Node();
     Node(const Node& orig);

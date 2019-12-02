@@ -5,10 +5,10 @@
 using namespace std;
 
 MeshCube::MeshCube() {
-	cout << "[MeshCube Constructor]" << endl;
+	cout << "[MeshCube constructor WITH ID: " << mId << "]" << endl;
 }
 
 
 MeshCube::~MeshCube() {
-	cout << "[MeshCube Destructor]" << endl;
+	cout << "[MeshCube Destructor WITH ID: " << mId << "]" << endl;
 }

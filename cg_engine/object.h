@@ -19,13 +19,17 @@ public:
     Object();
     Object(const Object& orig);
     virtual ~Object();
+
+	//USED FOR DEBUG
+	std::string debugStringClassName();
 	
 	virtual void render();
 	int getId();
-private:
-	static int mIdGenerator;
+
+protected:
 	int mId;
-	
+private:
+	//static int NEXT_ID;
 };
 
 #endif /* OBJECT_H */
