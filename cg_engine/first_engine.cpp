@@ -19,6 +19,10 @@
 float gNear = 1.0f;
 float gFar = 100.0f;
 float z_cord = 0.0f;
+int gMouseX;
+int gMouseY;
+glm::mat4 proj{ 1.0f };
+glm::mat4 ortho{ 1.0f };
 Cube* gpCube{};
 Cube gCube1{};
 Cube gCube2{};
@@ -26,8 +30,6 @@ Cube gCube2{};
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
 
-// Face colors:
-unsigned char faceColor[6][3];
 
 using namespace std;
 
@@ -36,21 +38,66 @@ void init_globals(){
 	gpCube = &gCube1;
 }
 
+void string_to_unsigned_char(unsigned char*& text, string &str) {
+	for (int i = 0; i < str.length(); i++) {
+		text[i] = str.at(i);
+	}
+	text[str.length()] = '\0';
+}
+
+void print_info() {
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(glm::value_ptr(ortho));
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+	//glDisable(GL_LIGHTING);
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	//LOCAL VARIABLE
+	string str;
+	unsigned char message_buffer[20];
+	unsigned char *pc = message_buffer;
+
+	//LOGO
+	glRasterPos2f(0.0f, 5.0f);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *) "LOCO ENGINE");
+	
+	//WIDTH + HEIGHT
+	glRasterPos2f(0.0f, 20.0f);
+	str = "WIDTH: " + to_string(glutGet(GLUT_WINDOW_WIDTH));
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	str = " - HEIGHT: " + to_string(glutGet(GLUT_WINDOW_HEIGHT));
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+
+	//MOUSE POSITION
+	glRasterPos2f(0.0f, 35.0f);
+	str = "MOUSE: X: " + to_string(gMouseX);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	str = " Y: " + to_string(gMouseY);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+
+	//glEnable(GL_LIGHTING);
+}
 
 void displayCallback(){
 	// Clear the screen:         
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      
 
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(glm::value_ptr(f));
+
 	glLoadMatrixf(glm::value_ptr(gCube1.GetMatrixModelView()));
 	gCube1.display(20);
 	glLoadMatrixf(glm::value_ptr(gCube2.GetMatrixModelView()));
 	gCube2.display(30);
 
-	//gpCube->display(50);
-	//gCube2.display(30);
-	// Swap this context's buffer:     
+	print_info();
+
 	glutSwapBuffers();   
 	
 	// Force another invocation of this rendering callback:
@@ -61,11 +108,13 @@ void set_projection_matrix(){
 	float width = (float) glutGet(GLUT_WINDOW_WIDTH);
 	float height = (float) glutGet(GLUT_WINDOW_HEIGHT);
 	glViewport(0, 0, width, height);
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, gNear, gFar);
-	glm::mat4 ortho = glm::ortho((float) -width / 2.0f, (float) width/2.0f, (float) -height/2.0f, (float) height / 2.0f, gNear, gFar);
+	proj = glm::perspective(glm::radians(45.0f), (float) width / (float) height, gNear, gFar);
+	//ortho = glm::ortho((float) -width / 2.0f, (float) width/2.0f, (float) -height/2.0f, (float) height / 2.0f, -1.0f, 1.0f);
+	ortho = glm::ortho((float)0, (float)width, (float)0, (float)height, -1.0f, 1.0f);
+
+
 	glMatrixMode(GL_PROJECTION);
-	//glLoadMatrixf(glm::value_ptr(projection));
-	glLoadMatrixf(glm::value_ptr(projection));
+	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -73,7 +122,6 @@ void reshapeCallback(int width, int height){
 	// For your information...:
 	cout << "[reshape func invoked]" << endl;
 	cout << "width: " << width << " height: " << height << endl;
-	//cout << "widthByeGlut: " << glutGet(GLUT_WINDOW_WIDTH) << " heightByeGlut: " << glutGet(GLUT_WINDOW_HEIGHT) << endl;
 
 	set_projection_matrix();
 	
@@ -94,14 +142,20 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 	cout << "AngleX: " <<gpCube->mAngleX << endl;
 	cout << "AngleY: " <<gpCube->mAngleY << endl;
 	
-	cout << "mouseX: " << mouse_x << "mouseY: " << mouse_y << endl;
-	
 	glutPostWindowRedisplay(glutGetWindow());
+}
+
+
+void mouseCallback(int button, int state, int x, int y) {
+	if (state == GLUT_DOWN) {
+		gMouseX = x;
+		gMouseY = y;
+	}
 }
 
 void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 
-	float step = 5.0f;
+	float step = 0.1f;
 	switch(key){
 		case 'n' : gNear -= step; set_projection_matrix(); break;
 		case 'N' : gNear += step; set_projection_matrix(); break;
@@ -144,6 +198,7 @@ void init_glut(int* argc, char** argv){
 	glutReshapeFunc(reshapeCallback); 
 	glutKeyboardFunc(keyboardCallback);
 	glutSpecialFunc(specialCallback);
+	glutMouseFunc(mouseCallback);
 	
 	/*
 	glFrontFace(GL_CW);
