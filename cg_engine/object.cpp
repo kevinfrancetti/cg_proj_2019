@@ -12,6 +12,7 @@
  */
 
 #include <iostream>
+#include <typeinfo>
 #include "engine.h"
 
 using namespace std;

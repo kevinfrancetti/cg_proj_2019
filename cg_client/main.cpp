@@ -12,6 +12,7 @@
  */
 
 #include <iostream>
+#include <typeinfo>
 #include "engine.h"
 using namespace std;
 
@@ -26,7 +27,7 @@ int main(int argc, char** argv) {
 	cout << typeid(First_engine).name() << endl;
 
 	First_engine eng{};
-	//eng.run(&argc, argv);
+	eng.run(&argc, argv);
 
 	cout << "ola" << endl;
     return 0;

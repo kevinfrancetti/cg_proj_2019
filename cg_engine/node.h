@@ -25,6 +25,8 @@ public:
 	virtual void loadModelMatrix(glm::mat4);
 	
 private:
+	Node* parent;
+		
 	glm::mat4 model{1.0f};
 };
 

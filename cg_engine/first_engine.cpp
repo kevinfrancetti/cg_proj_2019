@@ -18,14 +18,7 @@
 //GLOBALS//
 float gNear = 1.0f;
 float gFar = 100.0f;
-float red = 1.0f; 
-float green = 1.0f; 
-float blue = 1.0f; 
 float z_cord = 0.0f;
-GLfloat first_vertex[3];
-GLfloat second_vertex[3];
-GLfloat third_vertex[3];
-GLfloat* selectet_vertex = first_vertex;
 Cube* gpCube{};
 Cube gCube1{};
 Cube gCube2{};
@@ -41,39 +34,6 @@ using namespace std;
 
 void init_globals(){
 	gpCube = &gCube1;
-	first_vertex[0] = 15;
-	first_vertex[1] = 0;
-	first_vertex[2] = 0;
-	second_vertex[0] = -15;
-	second_vertex[1] = 0;
-	second_vertex[2] = 0;
-	third_vertex[0] = 0;
-	third_vertex[1] = 15;
-	third_vertex[2] = 0;
-}
-
-void displayTriangle(){
-	glBegin(GL_TRIANGLES);
-	glColor3f(red, 0.0f, 0.0f);
-	glVertex3fv(first_vertex);
-	glColor3f(0.0f, green, 0.0f);
-	glVertex3fv(second_vertex);
-	glColor3f(0.0f, 0.0f, blue);
-	glVertex3fv(third_vertex);
-	glEnd();
-}
-
-
-void displaySquare(float size){
-	glBegin(GL_TRIANGLE_STRIP);
-	glColor3f(red, 0.0f, 0.0f);
-	glVertex3f(-size, -size, z_cord);
-	glColor3f(0.0f, green, 0.0f);
-	glVertex3f(-size, size, z_cord);
-	glColor3f(0.0f, 0.0f, blue);
-	glVertex3f(size, -size, z_cord);
-	glVertex3f(size, size, z_cord);
-	glEnd();
 }
 
 
@@ -88,9 +48,6 @@ void displayCallback(){
 	glLoadMatrixf(glm::value_ptr(gCube2.GetMatrixModelView()));
 	gCube2.display(30);
 
-	//displayTriangle();
-	//displaySquare(20);
-	//displayCube(20);
 	//gpCube->display(50);
 	//gCube2.display(30);
 	// Swap this context's buffer:     
@@ -132,14 +89,6 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 		case GLUT_KEY_UP : gpCube->IncrementAngleX(step); break;
 		case GLUT_KEY_DOWN : gpCube->IncrementAngleX(-step); break;
 		
-		/*
-		case GLUT_KEY_LEFT : selectet_vertex[0] -= step; break;
-		case GLUT_KEY_RIGHT: selectet_vertex[0] += step; break;
-		case GLUT_KEY_UP: selectet_vertex[1] += step; break;
-		case GLUT_KEY_DOWN : selectet_vertex[1] -= step; break;
-		case GLUT_KEY_PAGE_UP: selectet_vertex[2] += step; break; // INVERTED FOR Z!!
-		case GLUT_KEY_PAGE_DOWN: selectet_vertex[2] -= step; break;//INVERTED FOR Z!!
-		*/ 
 	}
 	
 	cout << "AngleX: " <<gpCube->mAngleX << endl;
@@ -158,21 +107,12 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 		case 'N' : gNear += step; set_projection_matrix(); break;
 		case 'f' : gFar -= step; set_projection_matrix(); break;
 		case 'F' : gFar += step; set_projection_matrix(); break;
-		case 'R' : red += 0.01f; break;
-		case 'r' : red -= 0.01f; break;
-		case 'G' : green += 0.01f; break;
-		case 'g' : green -= 0.01f; break;
-		case 'B' : blue += 0.01f; break;
-		case 'b' : blue -= 0.01f; break;
 		case 'a' : angleX -= 1.0f; break;
 		case 'A' : angleX += 1.0f; break;
 		case 's' : angleY -= 1.0f; break;
 		case 'S' : angleY += 1.0f; break;
 		case 'z' : z_cord -= 1.0f; break;
 		case 'Z' : z_cord += 1.0f; break;
-		case '1' : selectet_vertex = first_vertex; break; 
-		//case '2' : selectet_vertex = second_vertex; break;
-		case '3' : selectet_vertex = third_vertex; break;
 
 		case '4' : gpCube->IncrementCordX(-step); break;
 		case '6' : gpCube->IncrementCordX(step); break;
