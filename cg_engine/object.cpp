@@ -36,9 +36,6 @@ Object::~Object() {
 	cout << "[Object destructor WITH ID: " << mId << " - " << debugStringClassName() << "]" << endl;
 }
 
-void Object::render(){
-	
-}
 
 int Object::getId(){
 	return mId;
