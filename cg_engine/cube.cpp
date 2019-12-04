@@ -58,8 +58,8 @@ glm::mat4& Cube::GetMatrixModelView(){
 
 
 Cube::Cube() {
-	cout << "HELLO CUBE" << endl;
-	cout << debugStringClassName() << endl;
+	cout << "Constructor: " << debugStringClassName() << endl;
+
 	randomize_colors();
 	mPosition = glm::vec3{0.0f, 0.0f, -95.0f};
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), mPosition);
@@ -138,5 +138,6 @@ Cube::Cube(const Cube& orig) {
 }
 
 Cube::~Cube() {
+	cout << "Destructor: " << debugStringClassName() << endl;
 }
 

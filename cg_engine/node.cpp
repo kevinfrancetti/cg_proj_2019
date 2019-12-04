@@ -18,13 +18,22 @@
 using namespace std;
 
 Node::Node(){
-	cout << "HELLO NODE" << endl;
+	cout << "Constructor: " << debugStringClassName() << endl;
 }
 
-Node::Node(const Node& orig) {
+
+Node::Node(const Node& orig) : Object(orig) {
+	cout << "Copy constructor: " << debugStringClassName() << endl;
 }
+
 
 Node::~Node() {
+	cout << "Destructor: " << debugStringClassName() << endl;
+}
+
+
+void Node::render() {
+
 }
 
 

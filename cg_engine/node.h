@@ -21,7 +21,7 @@ public:
     Node();
     Node(const Node& orig);
     virtual ~Node();
-
+	void render();
 	virtual void loadModelMatrix(glm::mat4);
 	
 private:

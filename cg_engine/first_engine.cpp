@@ -15,14 +15,17 @@
 #include <GL/freeglut.h>
 
 
-//GLOBALS//
+//======GLOBALS=======//
+
+/*PROGECTIONS VARIABLES*/
 float gNear = 1.0f;
 float gFar = 100.0f;
 float z_cord = 0.0f;
-int gMouseX;
-int gMouseY;
 glm::mat4 proj{ 1.0f };
 glm::mat4 ortho{ 1.0f };
+
+int gMouseX;
+int gMouseY;
 Cube* gpCube{};
 Cube gCube1{};
 Cube gCube2{};
@@ -231,12 +234,14 @@ First_engine::~First_engine() {
 
 void First_engine::run(int* argc, char** argv){
 
-	/*
-	Object o1;
-	Object o2 = o1;
-	cout << o1.getId() << endl;
-	cout << o2.getId() << endl;
-	*/
+	
+	Node o1;
+	o1.test = 5;
+	Node o2 = o1;
+	cout << o1.getId() << " test: " << o1.test << endl;
+	cout << o2.getId() << " test: " << o2.test << endl;
+	
+
 	/*
 	MeshCube m1;
 	MeshCube m2;

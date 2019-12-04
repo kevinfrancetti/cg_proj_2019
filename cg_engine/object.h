@@ -24,11 +24,12 @@ public:
 	//USED FOR DEBUG
 	std::string debugStringClassName();
 	
-	virtual void render();
+	virtual void render() = 0;
 	int getId();
+	int test = 3;
 
 protected:
-	int mId;
+	const int mId;
 private:
 	//static int NEXT_ID;
 };
