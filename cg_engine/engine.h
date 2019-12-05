@@ -13,6 +13,7 @@
 #define LIB_API  // Dummy declaration
 #endif
 
+#include <vector>
 #include "glm/glm.hpp"
 #include "glm/gtx/string_cast.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -23,5 +24,6 @@
 #include "node.h"
 #include "cube.h"
 #include "meshCube.h"
+#include "scene.h"
 
 

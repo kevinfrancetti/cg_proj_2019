@@ -13,6 +13,7 @@
 #include <iostream>
 #include "engine.h"
 #include <GL/freeglut.h>
+#include <vector>
 
 
 //======GLOBALS=======//
@@ -86,7 +87,9 @@ void print_info() {
 	//glEnable(GL_LIGHTING);
 }
 
-float gZ = -95.0f;
+float gX = 0.0f;
+float gY = 0.0f;
+float gZ = 0.0f;
 
 void displayCallback(){
 	// Clear the screen:         
@@ -96,7 +99,7 @@ void displayCallback(){
 	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
 
-	glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, gZ));
+	glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(gX, gY, gZ));
 
 	gCube1.setModelMatrix(trans);
 	gCube1.render();
@@ -119,6 +122,27 @@ void displayCallback(){
 	
 	// Force another invocation of this rendering callback:
 	glutPostWindowRedisplay(glutGetWindow());
+}
+
+
+void fun() {
+	int old_matrix_mode;
+	glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
+	glMatrixMode(GL_PROJECTION);
+
+	glm::mat4 scale = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ 0.5f, 0.5f, 1.0f });
+
+
+	glLoadMatrixf(glm::value_ptr(scale));
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glPointSize(5.0f);
+	glBegin(GL_POINTS);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glEnd();
+
+
+	//Restore previuos matrix mode
+	glMatrixMode(old_matrix_mode);
 }
 
 void set_projection_matrix(){
@@ -195,12 +219,22 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 		case 'x': gpCube = &gCube1; break;
 		case 'X': gpCube = &gCube2; break;
 
-		case 'p': gZ -= 0.5f;
-		case 'P': gZ += 0.5f;
+		case 'p': gZ -= 0.5f; break;
+		case 'P': gZ += 0.5f; break;
+
+		case 'o': gX -= 0.5f; break;
+		case 'O': gX += 0.5f; break;
+
+		case 'l': gY -= 0.5f; break;
+		case 'L': gY += 0.5f; break;
+
 
 	}
 	cout << "near: " << gNear << endl;
 	cout << "far: " << gFar << endl;
+
+	cout << "gX: " << gX << endl;
+	cout << "gY: " << gY << endl;
 	cout << "gZ: " << gZ << endl;
 
 	glutPostWindowRedisplay(glutGetWindow());
@@ -252,15 +286,43 @@ First_engine::First_engine(const First_engine& orig) {
 First_engine::~First_engine() {
 }
 
+
+void render(const Node* node, glm::mat4 model) {
+	glm::mat4 matrix_model = model * node->mModelMatrix;
+
+	if (node->hasChildren()) {
+		for (const Node* n : node->childrens) {
+			render(n, matrix_model);
+		}
+	}else { // is a mesh
+		node->render();
+	}
+
+}
+
+void render(Node* node) {
+
+
+}
+
+
 void First_engine::run(int* argc, char** argv){
 
 	
-	Node o1;
-	o1.test = 5;
-	Node o2 = o1;
-	cout << o1.getId() << " test: " << o1.test << endl;
-	cout << o2.getId() << " test: " << o2.test << endl;
-	
+	Node n1;
+	Node n2;
+	Node n3;
+
+	n2.setParent(&n1);
+	n1.addChild(&n2);
+
+	cout << "==============" << endl;
+	n1.printChilds();
+	n2.printChilds();
+	cout << "==============" << endl;
+
+
+
 
 	/*
 	MeshCube m1;

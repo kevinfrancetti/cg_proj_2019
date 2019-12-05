@@ -24,7 +24,7 @@ public:
 	//USED FOR DEBUG
 	std::string debugStringClassName();
 	
-	virtual void render() = 0;
+	virtual void render() const = 0;
 	int getId();
 	int test = 3;
 

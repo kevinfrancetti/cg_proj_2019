@@ -37,10 +37,7 @@ public:
 	void setModelMatrix(glm::mat4 modelMatrix);
 	glm::mat4 getModelMatrix();
 
-
 	void render();
-
-	
 
 	
 private:

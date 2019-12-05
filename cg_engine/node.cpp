@@ -40,11 +40,35 @@ glm::mat4 Node::getModelMatrix() {
 	return mModelMatrix;
 }
 
-void Node::render() {
+void Node::render() const {
+	cout << "HOLA NODE" << endl;
+}
 
+Node* Node::getParent() {
+	return parent;
+}
+
+void Node::setParent(Node* node){
+	
+}
+
+void Node::addChild(Node* node) {
+	childrens.push_back(node);
+}
+
+bool Node::hasChildren() const {
+	return childrens.empty();
+}
+
+int Node::numberOfChildrens() {
+	return childrens.size();
 }
 
 
-void Node::loadModelMatrix(glm::mat4 m){
-}
+void Node::printChilds() {
+	cout << "Node: " << mId  << " Chidlrens:" << endl;
+	for (const Node* x : childrens) {
+		cout << "\tChild ID: " << x->mId << endl;
+	}
 
+}

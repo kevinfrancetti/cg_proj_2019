@@ -24,7 +24,10 @@ int main(int argc, char** argv) {
 	for(int i = 0; i < argc; i++){
 		cout << argv[i] << endl;
 	}
-	cout << typeid(First_engine).name() << endl;
+
+
+	//cout << typeid(First_engine).name() << endl;
+	//cout << glm::to_string(glm::mat4{ 0.5f }) << endl;
 
 	First_engine eng{};
 
