@@ -86,6 +86,8 @@ void print_info() {
 	//glEnable(GL_LIGHTING);
 }
 
+float gZ = -95.0f;
+
 void displayCallback(){
 	// Clear the screen:         
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      
@@ -94,11 +96,23 @@ void displayCallback(){
 	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
 
-	glLoadMatrixf(glm::value_ptr(gCube1.GetMatrixModelView()));
-	gCube1.display(20);
-	glLoadMatrixf(glm::value_ptr(gCube2.GetMatrixModelView()));
-	gCube2.display(30);
+	glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, gZ));
 
+	gCube1.setModelMatrix(trans);
+	gCube1.render();
+
+
+
+	//glm::mat4 camera = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
+	//gCube2.render();
+	/*
+	glLoadMatrixf(glm::value_ptr(glm::inverse(camera) * gCube1.getModelMatrix()));
+	
+
+	gCube1.display(1);
+	glLoadMatrixf(glm::value_ptr(glm::inverse(camera) * gCube2.getModelMatrix()));
+	gCube2.display(10);
+	*/
 	print_info();
 
 	glutSwapBuffers();   
@@ -180,9 +194,15 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 
 		case 'x': gpCube = &gCube1; break;
 		case 'X': gpCube = &gCube2; break;
+
+		case 'p': gZ -= 0.5f;
+		case 'P': gZ += 0.5f;
+
 	}
 	cout << "near: " << gNear << endl;
 	cout << "far: " << gFar << endl;
+	cout << "gZ: " << gZ << endl;
+
 	glutPostWindowRedisplay(glutGetWindow());
 }
 

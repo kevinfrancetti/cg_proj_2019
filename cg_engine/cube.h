@@ -22,24 +22,32 @@ public:
 	void display(float edge);
     virtual ~Cube();
 	
+
+	//Deprecated
 	void IncrementAngleX(float incrementValue);
 	void IncrementAngleY(float incrementValue);
 	void IncrementCordX(float incrementValue);
 	void IncrementCordY(float incrementValue);
 	void IncrementCordZ(float incrementValue);
-	
-	glm::mat4& GetMatrixModelView();
-	
 	float mAngleX = 0;
 	float mAngleY = 0;
+
+
+	
+	void setModelMatrix(glm::mat4 modelMatrix);
+	glm::mat4 getModelMatrix();
+
+
+	void render();
+
+	
+
 	
 private:
 	void randomize_colors();
-	glm::mat4 mModelViewMatrix{ 1.0f };
 	glm::mat4 m_porjection;
 	glm::vec3 mPosition;
 	unsigned char mFaceColors[6][3];
 };
 
 #endif /* CUBE_H */
-

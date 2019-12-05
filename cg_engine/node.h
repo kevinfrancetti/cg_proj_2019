@@ -22,8 +22,15 @@ public:
     Node(const Node& orig);
     virtual ~Node();
 	void render();
+
+
+	virtual void setModelMatrix(glm::mat4 modelMatrix);
+	virtual glm::mat4 getModelMatrix();
 	virtual void loadModelMatrix(glm::mat4);
 	
+protected:
+	glm::mat4 mModelMatrix{ 1.0f };
+
 private:
 	Node* parent;
 		

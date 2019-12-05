@@ -18,6 +18,11 @@
 
 using namespace std;
 
+static float EDGE = 0.5f;
+
+
+
+
 void Cube::randomize_colors(){
 	int col = sizeof(mFaceColors[0]);
 	int row = sizeof(mFaceColors)/col;
@@ -48,24 +53,50 @@ void Cube::IncrementCordZ(float incrementValue){
 	mPosition.z += incrementValue;
 }
 
-glm::mat4& Cube::GetMatrixModelView(){
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f),mPosition); 
-	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(mAngleX+30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(mAngleY), glm::vec3(0.0f, 1.0f, 0.0f));
-	mModelViewMatrix = translation *  rotationY * rotationX;	
-	return mModelViewMatrix;
+glm::mat4 Cube::getModelMatrix(){
+	return mModelMatrix;
+}
+
+void Cube::setModelMatrix(glm::mat4 modelMatrix) {
+	mModelMatrix = modelMatrix;
 }
 
 
 Cube::Cube() {
 	cout << "Constructor: " << debugStringClassName() << endl;
-
 	randomize_colors();
 	mPosition = glm::vec3{0.0f, 0.0f, -95.0f};
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), mPosition);
 	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(mAngleX+30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(mAngleY), glm::vec3(0.0f, 1.0f, 0.0f));
-	mModelViewMatrix = translation *  rotationY * rotationX;	
+	mModelMatrix = translation *  rotationY * rotationX;	
+}
+
+
+void Cube::render() {
+
+	glm::mat4 camera = glm::mat4{ 1.0f };
+	glm::mat4 model_view = camera * mModelMatrix;
+
+	//Save old matrix mode
+	int old_matrix_mode;
+	glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
+
+
+	//Setup modelview matrix
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(glm::value_ptr(model_view));
+
+	glBegin(GL_TRIANGLES);
+		glVertex3f(-EDGE, -EDGE, EDGE);
+		glVertex3f(EDGE, -EDGE, EDGE);
+		glVertex3f(EDGE, EDGE, EDGE);
+	glEnd();
+
+
+	//Restore previuos matrix mode
+	glMatrixMode(old_matrix_mode);
+
 }
 
 

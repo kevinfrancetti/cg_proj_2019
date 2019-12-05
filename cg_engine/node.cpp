@@ -17,7 +17,7 @@
 
 using namespace std;
 
-Node::Node(){
+Node::Node() : mModelMatrix {1.0f} {
 	cout << "Constructor: " << debugStringClassName() << endl;
 }
 
@@ -31,6 +31,14 @@ Node::~Node() {
 	cout << "Destructor: " << debugStringClassName() << endl;
 }
 
+
+void Node::setModelMatrix(glm::mat4 modelMatrix) {
+	mModelMatrix = modelMatrix;
+}
+
+glm::mat4 Node::getModelMatrix() {
+	return mModelMatrix;
+}
 
 void Node::render() {
 
