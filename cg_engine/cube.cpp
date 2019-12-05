@@ -88,32 +88,20 @@ void Cube::render() {
 	glLoadMatrixf(glm::value_ptr(model_view));
 
 
-	/*
+	
 	glColor3f(0.0f, 1.0f, 0.0f);
 	glBegin(GL_TRIANGLES);
 	glVertex3f(-EDGE, -EDGE, EDGE);
 	glVertex3f(EDGE, -EDGE, EDGE);
 	glVertex3f(EDGE, EDGE, EDGE);
 	glEnd();
-	*/
-	
-	glColor3f(1.0f, 1.0f, 1.0f);
-	//glLineWidth(5.0f);
-	glPointSize(5.0f);
 
-	glMatrixMode(GL_PROJECTION);
-	
-	glm::mat4 scale = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ 0.5f, 0.5f, 0.5f });
-
-
-	glLoadMatrixf(glm::value_ptr(scale));
-
-	glBegin(GL_POINTS);
-	glVertex3f(0.0f, 0.0f, 0.0f);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glBegin(GL_TRIANGLES);
+	glVertex3f(-EDGE, -EDGE, EDGE);
+	glVertex3f(EDGE, EDGE, EDGE);
+	glVertex3f(-EDGE, EDGE, EDGE);
 	glEnd();
-	
-
-	
 	
 
 	//Restore previuos matrix mode

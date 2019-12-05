@@ -100,8 +100,9 @@ void displayCallback(){
 	glMatrixMode(GL_MODELVIEW);
 
 	glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(gX, gY, gZ));
+	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	gCube1.setModelMatrix(trans);
+	gCube1.setModelMatrix( trans * rotationY );
 	gCube1.render();
 
 
@@ -301,8 +302,7 @@ void render(const Node* node, glm::mat4 model) {
 }
 
 void render(Node* node) {
-
-
+	render(node, glm::mat4{ 1.0f });
 }
 
 
@@ -313,14 +313,16 @@ void First_engine::run(int* argc, char** argv){
 	Node n2;
 	Node n3;
 
-	n2.setParent(&n1);
 	n1.addChild(&n2);
+	n1.addChild(&n2);
+	n2.addChild(&n3);
 
 	cout << "==============" << endl;
 	n1.printChilds();
 	n2.printChilds();
 	cout << "==============" << endl;
 
+	render(&n1);
 
 
 

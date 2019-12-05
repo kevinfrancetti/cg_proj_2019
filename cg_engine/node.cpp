@@ -41,7 +41,7 @@ glm::mat4 Node::getModelMatrix() {
 }
 
 void Node::render() const {
-	cout << "HOLA NODE" << endl;
+	cout << "render() : Node ID: " << mId << endl;
 }
 
 Node* Node::getParent() {
@@ -53,11 +53,12 @@ void Node::setParent(Node* node){
 }
 
 void Node::addChild(Node* node) {
+	node->parent = this;
 	childrens.push_back(node);
 }
 
 bool Node::hasChildren() const {
-	return childrens.empty();
+	return !childrens.empty();
 }
 
 int Node::numberOfChildrens() {
