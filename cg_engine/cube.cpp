@@ -21,6 +21,7 @@ using namespace std;
 static float EDGE = 0.5f;
 
 
+ 
 
 
 void Cube::randomize_colors(){
@@ -88,6 +89,7 @@ void Cube::render() {
 	glLoadMatrixf(glm::value_ptr(model_view));
 
 
+	glEnable(GL_CULL_FACE);
 	
 	glColor3f(0.0f, 1.0f, 0.0f);
 	glBegin(GL_TRIANGLES);
@@ -96,11 +98,21 @@ void Cube::render() {
 	glVertex3f(EDGE, EDGE, EDGE);
 	glEnd();
 
+	glDisable(GL_CULL_FACE);
+	
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glBegin(GL_TRIANGLES);
 	glVertex3f(-EDGE, -EDGE, EDGE);
 	glVertex3f(EDGE, EDGE, EDGE);
 	glVertex3f(-EDGE, EDGE, EDGE);
+	glEnd();
+
+	
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glBegin(GL_TRIANGLES);
+	glVertex3f(EDGE, -EDGE, EDGE);
+	glVertex3f(EDGE, EDGE, EDGE);
+	glVertex3f(EDGE, -EDGE, -EDGE);
 	glEnd();
 	
 
