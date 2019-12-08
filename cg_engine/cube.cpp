@@ -18,10 +18,31 @@
 
 using namespace std;
 
-static float EDGE = 0.5f;
+#define EDGE 0.5f
 
 
- 
+//VERTEX STRATS FROM 1 TO 8
+#define VERTEX(x) &VERTEXES[3* ((x)-1)]
+static float VERTEXES[8 * 3] = {
+	//V1
+	-EDGE, -EDGE, EDGE,
+	//V2
+	EDGE, -EDGE, EDGE,
+	//V3
+	EDGE, EDGE, EDGE,
+	//V4
+	-EDGE, EDGE, EDGE,
+
+
+	//V5
+	-EDGE, -EDGE, -EDGE,
+	//V6
+	EDGE, -EDGE, -EDGE,
+	//V7
+	EDGE, EDGE, -EDGE,
+	//V8
+	-EDGE, EDGE, -EDGE,
+};
 
 
 void Cube::randomize_colors(){
@@ -65,19 +86,16 @@ void Cube::setModelMatrix(glm::mat4 modelMatrix) {
 
 Cube::Cube() {
 	cout << "Constructor: " << debugStringClassName() << endl;
-	randomize_colors();
-	mPosition = glm::vec3{0.0f, 0.0f, -95.0f};
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), mPosition);
-	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(mAngleX+30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(mAngleY), glm::vec3(0.0f, 1.0f, 0.0f));
-	mModelMatrix = translation *  rotationY * rotationX;	
+	//randomize_colors();
+	mModelMatrix = glm::mat4(1.0f);
 }
 
 
-void Cube::render() {
 
-	glm::mat4 camera = glm::mat4{ 1.0f };
-	glm::mat4 model_view = camera * mModelMatrix;
+
+void Cube::render() {
+	glm::mat4 fake_camera = glm::mat4{ 1.0f };
+	glm::mat4 model_view = fake_camera * mModelMatrix;
 
 	//Save old matrix mode
 	int old_matrix_mode;
@@ -88,33 +106,68 @@ void Cube::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(glm::value_ptr(model_view));
 
-
-	glEnable(GL_CULL_FACE);
-	
-	glColor3f(0.0f, 1.0f, 0.0f);
 	glBegin(GL_TRIANGLES);
-	glVertex3f(-EDGE, -EDGE, EDGE);
-	glVertex3f(EDGE, -EDGE, EDGE);
-	glVertex3f(EDGE, EDGE, EDGE);
-	glEnd();
 
-	glDisable(GL_CULL_FACE);
-	
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(-EDGE, -EDGE, EDGE);
-	glVertex3f(EDGE, EDGE, EDGE);
-	glVertex3f(-EDGE, EDGE, EDGE);
-	glEnd();
+		//FRONT
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3fv(VERTEX(1));
+		glVertex3fv(VERTEX(2));
+		glVertex3fv(VERTEX(3));
 
-	
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(EDGE, -EDGE, EDGE);
-	glVertex3f(EDGE, EDGE, EDGE);
-	glVertex3f(EDGE, -EDGE, -EDGE);
+		glVertex3fv(VERTEX(1));
+		glVertex3fv(VERTEX(3));
+		glVertex3fv(VERTEX(4));
+
+		//RIGHT
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3fv(VERTEX(2));
+		glVertex3fv(VERTEX(6));
+		glVertex3fv(VERTEX(3));
+
+		glVertex3fv(VERTEX(3));
+		glVertex3fv(VERTEX(6));
+		glVertex3fv(VERTEX(7));
+
+		//LEFT
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3fv(VERTEX(5));
+		glVertex3fv(VERTEX(1));
+		glVertex3fv(VERTEX(4));
+
+		glVertex3fv(VERTEX(5));
+		glVertex3fv(VERTEX(4));
+		glVertex3fv(VERTEX(8));
+
+		//TOP
+		glColor3f(0.0f, 1.0f, 1.0f);
+		glVertex3fv(VERTEX(4));
+		glVertex3fv(VERTEX(3));
+		glVertex3fv(VERTEX(7));
+
+		glVertex3fv(VERTEX(4));
+		glVertex3fv(VERTEX(7));
+		glVertex3fv(VERTEX(8));
+
+		//BOT
+		glColor3f(1.0f, 1.0f, 0.0f);
+		glVertex3fv(VERTEX(6));
+		glVertex3fv(VERTEX(2));
+		glVertex3fv(VERTEX(1));
+
+		glVertex3fv(VERTEX(1));
+		glVertex3fv(VERTEX(5));
+		glVertex3fv(VERTEX(6));
+
+		//BACK
+		glColor3f(1.0f, 0.0f, 1.0f);
+		glVertex3fv(VERTEX(6));
+		glVertex3fv(VERTEX(5));
+		glVertex3fv(VERTEX(7));
+
+		glVertex3fv(VERTEX(5));
+		glVertex3fv(VERTEX(8));
+		glVertex3fv(VERTEX(7));
 	glEnd();
-	
 
 	//Restore previuos matrix mode
 	glMatrixMode(old_matrix_mode);

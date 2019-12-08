@@ -27,6 +27,7 @@ glm::mat4 ortho{ 1.0f };
 
 int gMouseX;
 int gMouseY;
+bool gbIsCullingOn = false;
 Cube* gpCube{};
 Cube gCube1{};
 Cube gCube2{};
@@ -50,6 +51,8 @@ void string_to_unsigned_char(unsigned char*& text, string &str) {
 }
 
 void print_info() {
+
+	//INITIAL SET UP: PROJECTION MATRIX = ORTHO AND MODELVIEW = IDENTITY
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(ortho));
 	glMatrixMode(GL_MODELVIEW);
@@ -84,6 +87,25 @@ void print_info() {
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 
+	//CULLING OPTION
+	glRasterPos2f(0.0f, 50.0f);
+	if (glIsEnabled(GL_CULL_FACE))
+		str = "[On]/Off culling [c]";
+	else
+		str = "On/[Off] culling [c]";
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+
+	//WIREFRAME OPTION
+	glRasterPos2f(0.0f, 65.0f);
+	int poligon_mode;
+	glGetIntegerv(GL_POLYGON_MODE, &poligon_mode);
+	if(poligon_mode == GL_LINE)
+		str = "[On]/Off wireframe [w]";
+	else
+		str = "On/[Off] wireframe [w]";
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 	//glEnable(GL_LIGHTING);
 }
 
@@ -100,9 +122,11 @@ void displayCallback(){
 	glMatrixMode(GL_MODELVIEW);
 
 	glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(gX, gY, gZ));
-	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(1.0f, 0.0f, 0.0f));
 
-	gCube1.setModelMatrix( trans * rotationY );
+
+	gCube1.setModelMatrix( trans * rotationY * rotationX);
 	gCube1.render();
 
 
@@ -188,6 +212,7 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 }
 
 
+//When mouse a button is pressed down
 void mouseCallback(int button, int state, int x, int y) {
 	if (state == GLUT_DOWN) {
 		gMouseX = x;
@@ -203,6 +228,21 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 		case 'N' : gNear += step; set_projection_matrix(); break;
 		case 'f' : gFar -= step; set_projection_matrix(); break;
 		case 'F' : gFar += step; set_projection_matrix(); break;
+
+		case 'c': {
+			if (glIsEnabled(GL_CULL_FACE)) glDisable(GL_CULL_FACE);
+			else glEnable(GL_CULL_FACE);
+		}; break;
+
+		case 'w': {
+			int poligon_mode;
+			glGetIntegerv(GL_POLYGON_MODE, &poligon_mode);
+			if (poligon_mode == GL_LINE)
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			else
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+
 		case 'a' : angleX -= 1.0f; break;
 		case 'A' : angleX += 1.0f; break;
 		case 's' : angleY -= 1.0f; break;
