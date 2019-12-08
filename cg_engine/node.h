@@ -35,8 +35,8 @@ public:
 
 
 	//FRIENDS
-	friend void render(Node*);
-	friend void render(const Node*, glm::mat4);
+	friend void renderSceneGraph(Node*);
+	friend void renderSceneGraph(const Node*, glm::mat4);
 
 	//DEBUG METHODS:
 	void printChilds();

@@ -18,17 +18,13 @@
 class LIB_API Cube : public Node {
 public:
     Cube();
+	Cube(glm::mat4 model);
     Cube(const Cube& orig);
 	void display(float edge);
     virtual ~Cube();
 	
 
 	//Deprecated
-	void IncrementAngleX(float incrementValue);
-	void IncrementAngleY(float incrementValue);
-	void IncrementCordX(float incrementValue);
-	void IncrementCordY(float incrementValue);
-	void IncrementCordZ(float incrementValue);
 	float mAngleX = 0;
 	float mAngleY = 0;
 
@@ -43,7 +39,6 @@ public:
 private:
 	void randomize_colors();
 	glm::mat4 m_porjection;
-	glm::vec3 mPosition;
 	unsigned char mFaceColors[6][3];
 };
 

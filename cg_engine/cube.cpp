@@ -55,26 +55,6 @@ void Cube::randomize_colors(){
 			mFaceColors[i][j] = rand() % 255;
 }
 
-void Cube::IncrementAngleX(float incrementValue){
-	mAngleX += incrementValue;
-}
-
-void Cube::IncrementAngleY(float incrementValue){
-	mAngleY += incrementValue;
-}
-
-void Cube::IncrementCordX(float incrementValue){
-	mPosition.x += incrementValue;
-}
-
-void Cube::IncrementCordY(float incrementValue){
-	mPosition.y += incrementValue;
-}
-
-void Cube::IncrementCordZ(float incrementValue){
-	mPosition.z += incrementValue;
-}
-
 glm::mat4 Cube::getModelMatrix(){
 	return mModelMatrix;
 }
@@ -91,11 +71,13 @@ Cube::Cube() {
 }
 
 
+Cube::Cube(glm::mat4 model) {
+	mModelMatrix = model;
+}
 
 
 void Cube::render() {
-	glm::mat4 fake_camera = glm::mat4{ 1.0f };
-	glm::mat4 model_view = fake_camera * mModelMatrix;
+	glm::mat4 model_view = mModelMatrix;
 
 	//Save old matrix mode
 	int old_matrix_mode;
@@ -174,71 +156,6 @@ void Cube::render() {
 
 }
 
-
-void Cube::display(float edge){
-	float size = edge / 2.0f;
-	
-   // Back:
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(mFaceColors[0][0], mFaceColors[0][1], mFaceColors[0][2]);
-         glVertex3f(size, -size, -size);
-      glColor3ub(mFaceColors[1][0], mFaceColors[1][1], mFaceColors[1][2]);
-         glVertex3f(-size, -size, -size);
-      glColor3ub(mFaceColors[2][0], mFaceColors[2][1], mFaceColors[2][2]);
-         glVertex3f(size, size, -size);
-      glColor3ub(mFaceColors[3][0], mFaceColors[3][1], mFaceColors[3][2]);
-         glVertex3f(-size, size, -size);
-   glEnd();
-
-   // Front:          
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(mFaceColors[1][0], mFaceColors[1][1], mFaceColors[1][2]);
-         glVertex3f(-size, -size, size);
-         glVertex3f(size, -size, size);
-         glVertex3f(-size, size, size);
-         glVertex3f(size, size, size);
-   glEnd();
-
-   // Left:       
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(mFaceColors[2][0], mFaceColors[2][1], mFaceColors[2][2]);
-         glVertex3f(-size, size, -size);
-         glVertex3f(-size, -size, -size);
-         glVertex3f(-size, size, size);
-         glVertex3f(-size, -size, size);
-   glEnd();
-
-   // Right:          
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(mFaceColors[3][0], mFaceColors[3][1], mFaceColors[3][2]);
-         glVertex3f(size, -size, -size);
-         glVertex3f(size, size, -size);
-         glVertex3f(size, -size, size);
-         glVertex3f(size, size, size);
-   glEnd();
-
-   // Bottom:         
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(mFaceColors[4][0], mFaceColors[4][1], mFaceColors[4][2]);
-         glVertex3f(-size, -size, -size);
-         glVertex3f(size, -size, -size);
-         glVertex3f(-size, -size, size);
-         glVertex3f(size, -size, size);
-   glEnd();
-
-   // Top:        
-   glBegin(GL_TRIANGLE_STRIP);
-      glColor3ub(mFaceColors[4][0], mFaceColors[4][1], mFaceColors[4][2]);
-      glColor3f(1.0f, 0.0f, 0.0f);
-         glVertex3f(size, size, -size);
-      glColor3f(0.0f, 1.0f, 0.0f);
-         glVertex3f(-size, size, -size);
-      glColor3f(1.0f, 0.0f, 1.0f);
-         glVertex3f(size, size, size);
-      glColor3f(0.0f, 0.0f, 1.0f);
-         glVertex3f(-size, size, size);
-   glEnd();
-}
 
 Cube::Cube(const Cube& orig) {
 }

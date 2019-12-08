@@ -18,22 +18,43 @@
 
 //======GLOBALS=======//
 
-/*PROGECTIONS VARIABLES*/
+//PROGECTIONS VARIABLES
 float gNear = 1.0f;
 float gFar = 100.0f;
-float z_cord = 0.0f;
 glm::mat4 proj{ 1.0f };
 glm::mat4 ortho{ 1.0f };
 
+
+// Position
+float gX = 0.0f;
+float gY = 0.0f;
+float gZ = 0.0f;
+
+float gCamX = 0.0f;
+float gCamY = 0.0f;
+float gCamZ = 0.0f;
+
+
+//GLOBAL CAMERA
+glm::mat4 gMatrixCamera{ 1.0f };
+
+glm::vec3 gVectorCameraPosition{ 1.0f, 1.0f, 0.0f };
+glm::vec3 gVectorCameraLook{ 0.0f, 0.0f, 0.0f };
+
+
+
 int gMouseX;
 int gMouseY;
-bool gbIsCullingOn = false;
+
+
 Cube* gpCube{};
 Cube gCube1{};
 Cube gCube2{};
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
+
+
 
 
 using namespace std;
@@ -106,12 +127,37 @@ void print_info() {
 		str = "On/[Off] wireframe [w]";
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+
+	//PROJECTION OPTIONS
+	glRasterPos2f(0.0f, 80.0f);
+	str = "Near: " + to_string(gNear);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 95.0f);
+	str = "Far: " + to_string(gFar);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+
+
+	//GLOBAL CAMERA OPTIONS
+	glRasterPos2f(0.0f, 110.0f);
+	str = "CamX: " + to_string(gCamX);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 125.0f);
+	str = "CamY: " + to_string(gCamY);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 140.0f);
+	str = "CamZ: " + to_string(gCamZ);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+
+
 	//glEnable(GL_LIGHTING);
 }
 
-float gX = 0.0f;
-float gY = 0.0f;
-float gZ = 0.0f;
+
 
 void displayCallback(){
 	// Clear the screen:         
@@ -121,14 +167,22 @@ void displayCallback(){
 	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
 
-	glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(gX, gY, gZ));
+	/*
+	glm::mat4 trans1 = glm::translate(glm::mat4(1.0f), glm::vec3(gX, gY, gZ));
+	glm::mat4 trans2 = glm::translate(glm::mat4(1.0f), glm::vec3(-gX, -gY, gZ));
 	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(1.0f, 0.0f, 0.0f));
+	*/
 
+	//gMatrixCamera = glm::lookAt(glm::vec3{gCamX, gCamY, gCamZ}, glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f });
+	glm::mat4 camera = glm::inverse(glm::translate(glm::mat4(1.0f), glm::vec3(gCamX, gCamY, gCamZ)));
 
-	gCube1.setModelMatrix( trans * rotationY * rotationX);
+	gCube1.setModelMatrix(camera);
+	//gCube2.setModelMatrix(gMatrixCamera);
+
 	gCube1.render();
-
+	//gCube2.render();
+	
 
 
 	//glm::mat4 camera = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
@@ -149,26 +203,6 @@ void displayCallback(){
 	glutPostWindowRedisplay(glutGetWindow());
 }
 
-
-void fun() {
-	int old_matrix_mode;
-	glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
-	glMatrixMode(GL_PROJECTION);
-
-	glm::mat4 scale = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ 0.5f, 0.5f, 1.0f });
-
-
-	glLoadMatrixf(glm::value_ptr(scale));
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glPointSize(5.0f);
-	glBegin(GL_POINTS);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glEnd();
-
-
-	//Restore previuos matrix mode
-	glMatrixMode(old_matrix_mode);
-}
 
 void set_projection_matrix(){
 	float width = (float) glutGet(GLUT_WINDOW_WIDTH);
@@ -198,15 +232,12 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 	
 	float step = 10.0f;
 	switch(key){
-		case GLUT_KEY_LEFT : gpCube->IncrementAngleY(-step); break;
-		case GLUT_KEY_RIGHT: gpCube->IncrementAngleY(step); break;
-		case GLUT_KEY_UP : gpCube->IncrementAngleX(step); break;
-		case GLUT_KEY_DOWN : gpCube->IncrementAngleX(-step); break;
-		
+		case GLUT_KEY_LEFT :  break;
+		case GLUT_KEY_RIGHT: break;
+		case GLUT_KEY_UP : break;
+		case GLUT_KEY_DOWN :break;
 	}
 	
-	cout << "AngleX: " <<gpCube->mAngleX << endl;
-	cout << "AngleY: " <<gpCube->mAngleY << endl;
 	
 	glutPostWindowRedisplay(glutGetWindow());
 }
@@ -224,38 +255,39 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 
 	float step = 0.1f;
 	switch(key){
+
+		//MODIFY GLOBAL PROJECTION MATRIX
 		case 'n' : gNear -= step; set_projection_matrix(); break;
 		case 'N' : gNear += step; set_projection_matrix(); break;
 		case 'f' : gFar -= step; set_projection_matrix(); break;
 		case 'F' : gFar += step; set_projection_matrix(); break;
 
+
+		//ENABLE/DISABLE CULLING
 		case 'c': {
 			if (glIsEnabled(GL_CULL_FACE)) glDisable(GL_CULL_FACE);
 			else glEnable(GL_CULL_FACE);
 		}; break;
 
-		case 'w': {
+		//ENABLE/DISABLE WIREFRAME MODE
+		case 'v': {
 			int poligon_mode;
 			glGetIntegerv(GL_POLYGON_MODE, &poligon_mode);
-			if (poligon_mode == GL_LINE)
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			else
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		}
+			if (poligon_mode == GL_LINE) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}; break;
 
-		case 'a' : angleX -= 1.0f; break;
-		case 'A' : angleX += 1.0f; break;
-		case 's' : angleY -= 1.0f; break;
-		case 'S' : angleY += 1.0f; break;
-		case 'z' : z_cord -= 1.0f; break;
-		case 'Z' : z_cord += 1.0f; break;
+		case 'w': gCamZ -= 0.2f; break;
+		case 's': gCamZ += 0.2f; break;
+		case 'a': gCamX -= 0.2f; break;
+		case 'd': gCamX += 0.2f; break;
 
-		case '4' : gpCube->IncrementCordX(-step); break;
-		case '6' : gpCube->IncrementCordX(step); break;
-		case '8' : gpCube->IncrementCordY(step); break;
-		case '2' : gpCube->IncrementCordY(-step); break;
-		case '7' : gpCube->IncrementCordZ(-step); break;
-		case '9' : gpCube->IncrementCordZ(step); break;
+		
+
+		case 'q' : angleX -= 1.0f; break;
+		case 'Q' : angleX += 1.0f; break;
+		case 'e' : angleY -= 1.0f; break;
+		case 'E' : angleY += 1.0f; break;
 
 		case 'x': gpCube = &gCube1; break;
 		case 'X': gpCube = &gCube2; break;
@@ -268,12 +300,10 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 
 		case 'l': gY -= 0.5f; break;
 		case 'L': gY += 0.5f; break;
-
-
 	}
-	cout << "near: " << gNear << endl;
-	cout << "far: " << gFar << endl;
 
+
+	//Debug info
 	cout << "gX: " << gX << endl;
 	cout << "gY: " << gY << endl;
 	cout << "gZ: " << gZ << endl;
@@ -326,27 +356,25 @@ First_engine::~First_engine() {
 }
 
 
-void render(const Node* node, glm::mat4 model) {
+void renderSceneGraph(const Node* node, glm::mat4 model) {
 	glm::mat4 matrix_model = model * node->mModelMatrix;
 
 	if (node->hasChildren()) {
 		for (const Node* n : node->childrens) {
-			render(n, matrix_model);
+			renderSceneGraph(n, matrix_model);
 		}
 	}else { // is a mesh
 		node->render();
 	}
-
 }
 
-void render(Node* node) {
-	render(node, glm::mat4{ 1.0f });
+void renderSceneGraph(Node* node) {
+	renderSceneGraph(node, glm::mat4{ 1.0f });
 }
 
 
 void First_engine::run(int* argc, char** argv){
 
-	
 	Node n1;
 	Node n2;
 	Node n3;
@@ -360,17 +388,8 @@ void First_engine::run(int* argc, char** argv){
 	n2.printChilds();
 	cout << "==============" << endl;
 
-	render(&n1);
+	renderSceneGraph(&n1);
 
-
-
-	/*
-	MeshCube m1;
-	MeshCube m2;
-	cout << m1.getId() << endl;
-	cout << m2.getId() << endl;
-	*/
-	
 	init_globals();
 	init_glut(argc, argv);	
 } 
