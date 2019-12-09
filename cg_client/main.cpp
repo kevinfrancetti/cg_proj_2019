@@ -32,11 +32,6 @@ int main(int argc, char** argv) {
 	First_engine eng{};
 
 
-
-
-
-
-
 	eng.run(&argc, argv);
 
 	cout << "ola" << endl;

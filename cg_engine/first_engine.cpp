@@ -21,30 +21,32 @@
 //PROGECTIONS VARIABLES
 float gNear = 1.0f;
 float gFar = 100.0f;
+float gFov = 45.0f;
 glm::mat4 proj{ 1.0f };
 glm::mat4 ortho{ 1.0f };
 
 
-// Position
-float gX = 0.0f;
-float gY = 0.0f;
-float gZ = 0.0f;
-
-float gCamX = 0.0f;
-float gCamY = 0.0f;
-float gCamZ = 0.0f;
-
-
 //GLOBAL CAMERA
 glm::mat4 gMatrixCamera{ 1.0f };
+glm::vec3 gCameraBackv3;
+glm::vec3 gCameraFrontv3;
 
-glm::vec3 gVectorCameraPosition{ 1.0f, 1.0f, 0.0f };
-glm::vec3 gVectorCameraLook{ 0.0f, 0.0f, 0.0f };
+glm::mat4 gRotationX;
+glm::mat4 gRotationY;
+float gAlpha = 0;
+float gBeta = 0;
+float yaw = 0;
+float pitch = 0;
 
-
+//MOUSE
+int gMouseOldX;
+int gMouseOldY;
 
 int gMouseX;
 int gMouseY;
+
+int gDeltaX;
+int gDeltaY;
 
 
 Cube* gpCube{};
@@ -122,9 +124,9 @@ void print_info() {
 	int poligon_mode;
 	glGetIntegerv(GL_POLYGON_MODE, &poligon_mode);
 	if(poligon_mode == GL_LINE)
-		str = "[On]/Off wireframe [w]";
+		str = "[On]/Off wireframe [v]";
 	else
-		str = "On/[Off] wireframe [w]";
+		str = "On/[Off] wireframe [v]";
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 
@@ -137,19 +139,43 @@ void print_info() {
 	str = "Far: " + to_string(gFar);
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 110.0f);
+	str = "FOV: " + to_string(gFov);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 
 
 	//GLOBAL CAMERA OPTIONS
-	glRasterPos2f(0.0f, 110.0f);
-	str = "CamX: " + to_string(gCamX);
-	string_to_unsigned_char(pc, str);
-	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 	glRasterPos2f(0.0f, 125.0f);
-	str = "CamY: " + to_string(gCamY);
+	str = "CamBackX: " + to_string(gCameraBackv3.x);
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 	glRasterPos2f(0.0f, 140.0f);
-	str = "CamZ: " + to_string(gCamZ);
+	str = "CamBackY: " + to_string(gCameraBackv3.y);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 155.0f);
+	str = "CamBackZ: " + to_string(gCameraBackv3.z);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 170.0f);
+	str = "CamFrontX: " + to_string(gCameraFrontv3.x);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 185.0f);
+	str = "CamFrontY: " + to_string(gCameraFrontv3.y);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 200.0f);
+	str = "CamFrontZ: " + to_string(gCameraFrontv3.z);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 215.0f);
+	str = "YAW: " + to_string(yaw);
+	string_to_unsigned_char(pc, str);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
+	glRasterPos2f(0.0f, 230.0f);
+	str = "PITCH: " + to_string(pitch);
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 
@@ -159,42 +185,35 @@ void print_info() {
 
 
 
-void displayCallback(){
+void displayCallback() {
 	// Clear the screen:         
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
 
-	/*
-	glm::mat4 trans1 = glm::translate(glm::mat4(1.0f), glm::vec3(gX, gY, gZ));
-	glm::mat4 trans2 = glm::translate(glm::mat4(1.0f), glm::vec3(-gX, -gY, gZ));
+
+	//SOME RANDOM TESTS MATRICES
+	glm::mat4 R = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 L = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+	glm::mat4 translate = glm::translate(glm::mat4(1.0f), gCameraBackv3);
 	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(1.0f, 0.0f, 0.0f));
-	*/
 
-	//gMatrixCamera = glm::lookAt(glm::vec3{gCamX, gCamY, gCamZ}, glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f });
-	glm::mat4 camera = glm::inverse(glm::translate(glm::mat4(1.0f), glm::vec3(gCamX, gCamY, gCamZ)));
+	//gCameraFrontv3 = glm::vec3{ 0.0f, 0.0f, -30.0f };
+	//glm::mat4 view = glm::lookAt(gCameraBackv3, glm::vec3{0.0f, 0.0f, -30.0f}, glm::vec3{ 0.0f, 1.0f, 0.0f });
+	glm::mat4 view = glm::lookAt(gCameraBackv3, gCameraBackv3 + gCameraFrontv3, glm::vec3{ 0.0f, 1.0f, 0.0f });
 
-	gCube1.setModelMatrix(camera);
-	//gCube2.setModelMatrix(gMatrixCamera);
 
+	//gCube1.setModelMatrix(translate);
+	gCube1.setModelMatrix( view * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f)));
+	
 	gCube1.render();
 	//gCube2.render();
-	
-
-
-	//glm::mat4 camera = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
 	//gCube2.render();
-	/*
-	glLoadMatrixf(glm::value_ptr(glm::inverse(camera) * gCube1.getModelMatrix()));
 	
 
-	gCube1.display(1);
-	glLoadMatrixf(glm::value_ptr(glm::inverse(camera) * gCube2.getModelMatrix()));
-	gCube2.display(10);
-	*/
 	print_info();
 
 	glutSwapBuffers();   
@@ -204,11 +223,75 @@ void displayCallback(){
 }
 
 
+
+//FUNCTION DECATIVATED
+bool jump = false;
+void mouse_passive_motion_callback(int x, int y) {
+
+	if (jump) {
+		jump = false;
+		return;
+	}
+	float xoffset = x - gMouseOldX;
+	float yoffset = gMouseOldY - y; // reversed since y-coordinates go from bottom to top
+	gMouseOldX = x;
+	gMouseOldY = y;
+
+	float sensitivity = 0.5f; // change this value to your liking
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	// make sure that when pitch is out of bounds, screen doesn't get flipped
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	gCameraFrontv3 = glm::normalize(front);
+
+	jump = true;
+	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
+	glutPostWindowRedisplay(glutGetWindow());
+
+
+
+
+	/*
+	gMouseX = x;
+	gMouseY = y;
+	gDeltaX = gMouseX - gMouseOldX;
+	gDeltaY = gMouseY - gMouseOldY;
+	gMouseOldX = x;
+	gMouseOldY = y;
+
+	gAlpha += gDeltaX * 0.1;
+	gBeta += gDeltaY * 0.1;
+
+
+	//gRotationX =  glm::rotate(glm::mat4(1.0f), glm::radians((float) gBeta), glm::vec3(1.0f, 0.0f, 0.0f));
+	//gRotationY =  glm::rotate(glm::mat4(1.0f), glm::radians((float) -gAlpha), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	cout << "alpha: " << gAlpha << endl;
+	cout << "beta: " << gBeta << endl;
+
+	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
+	*/
+}
+
+
+
 void set_projection_matrix(){
 	float width = (float) glutGet(GLUT_WINDOW_WIDTH);
 	float height = (float) glutGet(GLUT_WINDOW_HEIGHT);
 	glViewport(0, 0, width, height);
-	proj = glm::perspective(glm::radians(45.0f), (float) width / (float) height, gNear, gFar);
+	proj = glm::perspective(glm::radians(gFov), (float) width / (float) height, gNear, gFar);
 	//ortho = glm::ortho((float) -width / 2.0f, (float) width/2.0f, (float) -height/2.0f, (float) height / 2.0f, -1.0f, 1.0f);
 	ortho = glm::ortho((float)0, (float)width, (float)0, (float)height, -1.0f, 1.0f);
 
@@ -232,28 +315,36 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 	
 	float step = 10.0f;
 	switch(key){
-		case GLUT_KEY_LEFT :  break;
-		case GLUT_KEY_RIGHT: break;
-		case GLUT_KEY_UP : break;
-		case GLUT_KEY_DOWN :break;
+		case GLUT_KEY_LEFT : angleX += 1.0f; break;
+		case GLUT_KEY_RIGHT: angleX -= 1.0f; break;
+		case GLUT_KEY_UP : angleY += 1.0f; break;
+		case GLUT_KEY_DOWN : angleY -= 1.0f; break;
 	}
-	
 	
 	glutPostWindowRedisplay(glutGetWindow());
 }
 
+void mouse_wheel_Callback(int wheel, int direction, int x, int y) {
+	if (direction == 1) gFov += 1.0f;
+	else gFov -= 1.0f;
+
+	set_projection_matrix();
+}
 
 //When mouse a button is pressed down
-void mouseCallback(int button, int state, int x, int y) {
+void mouse_callback(int button, int state, int x, int y) {
 	if (state == GLUT_DOWN) {
 		gMouseX = x;
 		gMouseY = y;
 	}
 }
 
+
+
+
 void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 
-	float step = 0.1f;
+	float step = 0.5f;
 	switch(key){
 
 		//MODIFY GLOBAL PROJECTION MATRIX
@@ -277,36 +368,14 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 			else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}; break;
 
-		case 'w': gCamZ -= 0.2f; break;
-		case 's': gCamZ += 0.2f; break;
-		case 'a': gCamX -= 0.2f; break;
-		case 'd': gCamX += 0.2f; break;
-
-		
-
-		case 'q' : angleX -= 1.0f; break;
-		case 'Q' : angleX += 1.0f; break;
-		case 'e' : angleY -= 1.0f; break;
-		case 'E' : angleY += 1.0f; break;
-
-		case 'x': gpCube = &gCube1; break;
-		case 'X': gpCube = &gCube2; break;
-
-		case 'p': gZ -= 0.5f; break;
-		case 'P': gZ += 0.5f; break;
-
-		case 'o': gX -= 0.5f; break;
-		case 'O': gX += 0.5f; break;
-
-		case 'l': gY -= 0.5f; break;
-		case 'L': gY += 0.5f; break;
+		case 'w': gCameraBackv3.z -= 0.2f; break;
+		case 's': gCameraBackv3.z += 0.2f; break;
+		case 'a': gCameraBackv3.x -= 0.2f; break;
+		case 'd': gCameraBackv3.x += 0.2f; break;
+		case 't': gCameraBackv3.y -= 0.2f; break;
+		case 'g': gCameraBackv3.y += 0.2f; break;
+	
 	}
-
-
-	//Debug info
-	cout << "gX: " << gX << endl;
-	cout << "gY: " << gY << endl;
-	cout << "gZ: " << gZ << endl;
 
 	glutPostWindowRedisplay(glutGetWindow());
 }
@@ -326,7 +395,9 @@ void init_glut(int* argc, char** argv){
 	glutReshapeFunc(reshapeCallback); 
 	glutKeyboardFunc(keyboardCallback);
 	glutSpecialFunc(specialCallback);
-	glutMouseFunc(mouseCallback);
+	glutMouseFunc(mouse_callback);
+	glutMouseWheelFunc(mouse_wheel_Callback);
+	glutPassiveMotionFunc(mouse_passive_motion_callback);
 	
 	//glEnable(GL_CULL_FACE);
 //	glFrontFace(GL_CW);
