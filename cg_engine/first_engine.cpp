@@ -85,7 +85,7 @@ void print_info() {
 
 	//LOCAL VARIABLE
 	string str;
-	unsigned char message_buffer[20];
+	unsigned char message_buffer[50];
 	unsigned char *pc = message_buffer;
 
 	//LOGO
@@ -120,6 +120,7 @@ void print_info() {
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 
 	//WIREFRAME OPTION
+	/*
 	glRasterPos2f(0.0f, 65.0f);
 	int poligon_mode;
 	glGetIntegerv(GL_POLYGON_MODE, &poligon_mode);
@@ -129,7 +130,9 @@ void print_info() {
 		str = "On/[Off] wireframe [v]";
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
-
+	*/
+	
+	
 	//PROJECTION OPTIONS
 	glRasterPos2f(0.0f, 80.0f);
 	str = "Near: " + to_string(gNear);
