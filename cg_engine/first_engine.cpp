@@ -216,7 +216,6 @@ void displayCallback() {
 	//gCube2.render();
 	//gCube2.render();
 	
-
 	print_info();
 
 	glutSwapBuffers();   
@@ -230,15 +229,9 @@ void displayCallback() {
 //FUNCTION DECATIVATED
 void mouse_passive_motion_callback(int x, int y) {
 	
-
-
-	
-	
 	float xoffset = 0.0f;// = x - gMouseOldX;
 	float yoffset = 0.0f;// = gMouseOldY - y; // reversed since y-coordinates go from bottom to top
 	float sensitivity = 0.5f; // change this value to your liking
-
-
 
 	//SPERIMENTAL
 	if (x > glutGet(GLUT_WINDOW_WIDTH) / 2) {
@@ -265,6 +258,12 @@ void mouse_passive_motion_callback(int x, int y) {
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	gCameraFrontv3 = glm::normalize(front);
 
+	static int count = 0;
+
+	cout << "count " << count++ << endl;
+	cout << "xoffset: " << xoffset << endl;
+	cout << "yoffset: " << yoffset << endl;
+	
 	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
 	glutPostWindowRedisplay(glutGetWindow());
 
