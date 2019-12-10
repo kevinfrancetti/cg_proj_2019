@@ -120,17 +120,16 @@ void print_info() {
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 
 	//WIREFRAME OPTION
-	/*
 	glRasterPos2f(0.0f, 65.0f);
-	int poligon_mode;
-	glGetIntegerv(GL_POLYGON_MODE, &poligon_mode);
-	if(poligon_mode == GL_LINE)
+	int poligon_mode[2];
+	glGetIntegerv(GL_POLYGON_MODE, poligon_mode);
+	if(poligon_mode[1] == GL_LINE)
 		str = "[On]/Off wireframe [v]";
 	else
 		str = "On/[Off] wireframe [v]";
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
-	*/
+	
 	
 	
 	//PROJECTION OPTIONS
@@ -373,9 +372,9 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 
 		//ENABLE/DISABLE WIREFRAME MODE
 		case 'v': {
-			int poligon_mode;
-			glGetIntegerv(GL_POLYGON_MODE, &poligon_mode);
-			if (poligon_mode == GL_LINE) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			int poligon_mode[2];
+			glGetIntegerv(GL_POLYGON_MODE, poligon_mode);
+			if (poligon_mode[1] == GL_LINE) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}; break;
 
