@@ -30,6 +30,7 @@ glm::mat4 ortho{ 1.0f };
 glm::mat4 gMatrixCamera{ 1.0f };
 glm::vec3 gCameraBackv3;
 glm::vec3 gCameraFrontv3;
+glm::vec3 gCameraUpv3{0.0f, 1.0f, 0.0f};
 
 glm::mat4 gRotationX;
 glm::mat4 gRotationY;
@@ -121,7 +122,7 @@ void print_info() {
 
 	//WIREFRAME OPTION
 	glRasterPos2f(0.0f, 65.0f);
-	int poligon_mode[2];
+	int poligon_mode[2];//This could become a pointer and then point it at position 1
 	glGetIntegerv(GL_POLYGON_MODE, poligon_mode);
 	if(poligon_mode[1] == GL_LINE)
 		str = "[On]/Off wireframe [v]";
@@ -187,6 +188,14 @@ void print_info() {
 
 
 
+
+//SOME RANDOM TESTS MATRICES
+glm::mat4 R = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+glm::mat4 L = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+glm::mat4 translate = glm::translate(glm::mat4(1.0f), gCameraBackv3);
+glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
+glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(1.0f, 0.0f, 0.0f));
+
 void displayCallback() {
 	// Clear the screen:         
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -195,18 +204,9 @@ void displayCallback() {
 	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
 
-
-	//SOME RANDOM TESTS MATRICES
-	glm::mat4 R = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	glm::mat4 L = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
-	glm::mat4 translate = glm::translate(glm::mat4(1.0f), gCameraBackv3);
-	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(1.0f, 0.0f, 0.0f));
-
 	//gCameraFrontv3 = glm::vec3{ 0.0f, 0.0f, -30.0f };
 	//glm::mat4 view = glm::lookAt(gCameraBackv3, glm::vec3{0.0f, 0.0f, -30.0f}, glm::vec3{ 0.0f, 1.0f, 0.0f });
-	glm::mat4 view = glm::lookAt(gCameraBackv3, gCameraBackv3 + gCameraFrontv3, glm::vec3{ 0.0f, 1.0f, 0.0f });
-
+	glm::mat4 view = glm::lookAt(gCameraBackv3, gCameraBackv3 + gCameraFrontv3, gCameraUpv3);
 
 	//gCube1.setModelMatrix(translate);
 	gCube1.setModelMatrix( view * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f)));
@@ -228,18 +228,15 @@ void displayCallback() {
 //FUNCTION DECATIVATED
 void mouse_passive_motion_callback(int x, int y) {
 
-	cout << "A" << endl;
 	if(x == glutGet(GLUT_WINDOW_WIDTH)/2){
 		if(y == glutGet(GLUT_WINDOW_HEIGHT)/2){
-			cout << "B" << endl;
 			return;
 		}
 	}
-	cout << "C" << endl;
 	
 	float xoffset = 0.0f;// = x - gMouseOldX;
 	float yoffset = 0.0f;// = gMouseOldY - y; // reversed since y-coordinates go from bottom to top
-	float sensitivity = 0.5f; // change this value to your liking
+	float sensitivity = 1.0f; // change this value to your liking
 
 	//SPERIMENTAL
 	if (x > glutGet(GLUT_WINDOW_WIDTH) / 2) {
@@ -266,33 +263,8 @@ void mouse_passive_motion_callback(int x, int y) {
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	gCameraFrontv3 = glm::normalize(front);
 
-	
 	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
 	glutPostWindowRedisplay(glutGetWindow());
-
-
-
-
-	/*
-	gMouseX = x;
-	gMouseY = y;
-	gDeltaX = gMouseX - gMouseOldX;
-	gDeltaY = gMouseY - gMouseOldY;
-	gMouseOldX = x;
-	gMouseOldY = y;
-
-	gAlpha += gDeltaX * 0.1;
-	gBeta += gDeltaY * 0.1;
-
-
-	//gRotationX =  glm::rotate(glm::mat4(1.0f), glm::radians((float) gBeta), glm::vec3(1.0f, 0.0f, 0.0f));
-	//gRotationY =  glm::rotate(glm::mat4(1.0f), glm::radians((float) -gAlpha), glm::vec3(0.0f, 1.0f, 0.0f));
-
-	cout << "alpha: " << gAlpha << endl;
-	cout << "beta: " << gBeta << endl;
-
-	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
-	*/
 }
 
 
@@ -355,6 +327,7 @@ void mouse_callback(int button, int state, int x, int y) {
 void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 
 	float step = 0.5f;
+	float camera_speed = 0.05f;
 	switch(key){
 
 		//MODIFY GLOBAL PROJECTION MATRIX
@@ -378,12 +351,11 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 			else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}; break;
 
-		case 'w': gCameraBackv3.z -= 0.2f; break;
-		case 's': gCameraBackv3.z += 0.2f; break;
-		case 'a': gCameraBackv3.x -= 0.2f; break;
-		case 'd': gCameraBackv3.x += 0.2f; break;
-		case 't': gCameraBackv3.y -= 0.2f; break;
-		case 'g': gCameraBackv3.y += 0.2f; break;
+		case 'w': gCameraBackv3 += camera_speed * gCameraFrontv3; break;
+		case 's': gCameraBackv3 -= camera_speed * gCameraFrontv3; break;
+		case 'a': gCameraBackv3 -= glm::normalize(glm::cross(gCameraFrontv3, gCameraUpv3)) * camera_speed; break;
+		case 'd': gCameraBackv3 += glm::normalize(glm::cross(gCameraFrontv3, gCameraUpv3)) * camera_speed; break;
+
 	
 	}
 
