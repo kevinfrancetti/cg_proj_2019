@@ -57,9 +57,6 @@ Cube gCube2{};
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
 
-
-
-
 using namespace std;
 
 
@@ -86,7 +83,7 @@ void print_info() {
 
 	//LOCAL VARIABLE
 	string str;
-	unsigned char message_buffer[50];
+	unsigned char message_buffer[40];
 	unsigned char *pc = message_buffer;
 
 	//LOGO
@@ -185,9 +182,6 @@ void print_info() {
 
 	//glEnable(GL_LIGHTING);
 }
-
-
-
 
 //SOME RANDOM TESTS MATRICES
 glm::mat4 R = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -355,8 +349,6 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 		case 's': gCameraBackv3 -= camera_speed * gCameraFrontv3; break;
 		case 'a': gCameraBackv3 -= glm::normalize(glm::cross(gCameraFrontv3, gCameraUpv3)) * camera_speed; break;
 		case 'd': gCameraBackv3 += glm::normalize(glm::cross(gCameraFrontv3, gCameraUpv3)) * camera_speed; break;
-
-	
 	}
 
 	glutPostWindowRedisplay(glutGetWindow());
@@ -385,7 +377,6 @@ void init_glut(int* argc, char** argv){
 //	glFrontFace(GL_CW);
    	glClearColor(1.0f, 0.6f, 0.1f, 1.0f); // RGBA components
 	glEnable(GL_DEPTH_TEST);
-
 	
 	/*
 	glEnable(GL_LIGHTING);
@@ -393,7 +384,6 @@ void init_glut(int* argc, char** argv){
 	*/
 	cout << glGetString(GL_VERSION) << endl;
 
-	
 	glutMainLoop();
 	cout << "EXIT" << endl;
 	
