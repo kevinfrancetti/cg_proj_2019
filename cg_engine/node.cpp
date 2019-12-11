@@ -41,7 +41,7 @@ glm::mat4 Node::getModelMatrix() {
 }
 
 void Node::render() const {
-	cout << "render() : Node ID: " << mId << endl;
+	//cout << "render() : "<<  debugStringClassName()  << " ID: " << mId << endl;
 }
 
 Node* Node::getParent() {
@@ -66,7 +66,7 @@ int Node::numberOfChildrens() {
 }
 
 
-void Node::printChilds() {
+void Node::printChilds() const {
 	cout << "Node: " << mId  << " Chidlrens:" << endl;
 	for (const Node* x : childrens) {
 		cout << "\tChild ID: " << x->mId << endl;

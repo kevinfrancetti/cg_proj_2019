@@ -20,20 +20,13 @@ public:
     Cube();
 	Cube(glm::mat4 model);
     Cube(const Cube& orig);
-	void display(float edge);
     virtual ~Cube();
 	
-
-	//Deprecated
-	float mAngleX = 0;
-	float mAngleY = 0;
-
-
 	
 	void setModelMatrix(glm::mat4 modelMatrix);
 	glm::mat4 getModelMatrix();
 
-	void render();
+	void render() const;
 
 	
 private:

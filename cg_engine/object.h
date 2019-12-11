@@ -22,7 +22,7 @@ public:
     virtual ~Object();
 
 	//USED FOR DEBUG
-	std::string debugStringClassName();
+	std::string debugStringClassName() const;
 	
 	virtual void render() const = 0;
 	int getId();

@@ -19,7 +19,7 @@ using namespace std;
 
 static int NEXT_ID = 0;
 
-string Object::debugStringClassName() {
+string Object::debugStringClassName() const {
 	return typeid(*this).name();
 }
 

@@ -23,7 +23,6 @@
 #include "object.h"
 #include "node.h"
 #include "cube.h"
-#include "meshCube.h"
 #include "scene.h"
 
 

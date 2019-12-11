@@ -20,7 +20,6 @@ using namespace std;
 
 #define EDGE 0.5f
 
-
 //VERTEX STRATS FROM 1 TO 8
 #define VERTEX(x) &VERTEXES[3* ((x)-1)]
 static float VERTEXES[8 * 3] = {
@@ -76,17 +75,18 @@ Cube::Cube(glm::mat4 model) {
 }
 
 
-void Cube::render() {
+void Cube::render() const{
+	//Node::render();//FOR DEBUG
 	glm::mat4 model_view = mModelMatrix;
 
 	//Save old matrix mode
-	int old_matrix_mode;
-	glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
+	//int old_matrix_mode;
+	//glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
 
 
 	//Setup modelview matrix
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(glm::value_ptr(model_view));
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadMatrixf(glm::value_ptr(model_view));
 
 	glBegin(GL_TRIANGLES);
 
@@ -152,7 +152,7 @@ void Cube::render() {
 	glEnd();
 
 	//Restore previuos matrix mode
-	glMatrixMode(old_matrix_mode);
+	//glMatrixMode(old_matrix_mode);
 
 }
 

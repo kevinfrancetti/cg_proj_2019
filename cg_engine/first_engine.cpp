@@ -50,19 +50,27 @@ int gDeltaX;
 int gDeltaY;
 
 
-Cube* gpCube{};
 Cube gCube1{};
 Cube gCube2{};
+
+
+
+//TEST
+Node n1;
+Node n2;
+Node n3;
+Node n4;
+Cube c1;
+Cube c2;
+Scene s{ &n1 };
+
+
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
 
 using namespace std;
 
-
-void init_globals(){
-	gpCube = &gCube1;
-}
 
 void string_to_unsigned_char(unsigned char*& text, string &str) {
 	for (int i = 0; i < str.length(); i++) {
@@ -129,7 +137,6 @@ void print_info() {
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
 	
 	
-	
 	//PROJECTION OPTIONS
 	glRasterPos2f(0.0f, 80.0f);
 	str = "Near: " + to_string(gNear);
@@ -187,8 +194,7 @@ void print_info() {
 glm::mat4 R = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 glm::mat4 L = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
 glm::mat4 translate = glm::translate(glm::mat4(1.0f), gCameraBackv3);
-glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
-glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(1.0f, 0.0f, 0.0f));
+
 
 void displayCallback() {
 	// Clear the screen:         
@@ -198,21 +204,21 @@ void displayCallback() {
 	glLoadMatrixf(glm::value_ptr(proj));
 	glMatrixMode(GL_MODELVIEW);
 
-	//gCameraFrontv3 = glm::vec3{ 0.0f, 0.0f, -30.0f };
-	//glm::mat4 view = glm::lookAt(gCameraBackv3, glm::vec3{0.0f, 0.0f, -30.0f}, glm::vec3{ 0.0f, 1.0f, 0.0f });
-	glm::mat4 view = glm::lookAt(gCameraBackv3, gCameraBackv3 + gCameraFrontv3, gCameraUpv3);
 
-	//gCube1.setModelMatrix(translate);
-	gCube1.setModelMatrix( view * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f)));
+	glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(angleY), glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 view = glm::lookAt(gCameraBackv3, gCameraBackv3 + gCameraFrontv3, gCameraUpv3);
 	
-	gCube1.render();
-	//gCube2.render();
-	//gCube2.render();
+	n1.setModelMatrix(n1.getModelMatrix() * rotationX * rotationY);
+	s.setViewMatrix(view);
+	s.renderSceneGraph();
+	//gCube1.setModelMatrix( view * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f)));
+	
+	//gCube1.render();
+
 	
 	print_info();
-
 	glutSwapBuffers();   
-	
 	// Force another invocation of this rendering callback:
 	glutPostWindowRedisplay(glutGetWindow());
 }
@@ -222,15 +228,14 @@ void displayCallback() {
 //FUNCTION DECATIVATED
 void mouse_passive_motion_callback(int x, int y) {
 
+	//IF MOUSE IS ALREADY IN THE CENTER SKIP THIS FUNCTION
 	if(x == glutGet(GLUT_WINDOW_WIDTH)/2){
 		if(y == glutGet(GLUT_WINDOW_HEIGHT)/2){
 			return;
 		}
 	}
 	
-	float xoffset = 0.0f;// = x - gMouseOldX;
-	float yoffset = 0.0f;// = gMouseOldY - y; // reversed since y-coordinates go from bottom to top
-	float sensitivity = 1.0f; // change this value to your liking
+	float sensitivity = 1.0f;
 
 	//SPERIMENTAL
 	if (x > glutGet(GLUT_WINDOW_WIDTH) / 2) {
@@ -238,12 +243,10 @@ void mouse_passive_motion_callback(int x, int y) {
 	}
 	else if(x < glutGet(GLUT_WINDOW_WIDTH) / 2)  yaw -= sensitivity;
 
-
 	if (y > glutGet(GLUT_WINDOW_HEIGHT) / 2) {
 		pitch -= sensitivity;
 	}
 	else if( y < glutGet(GLUT_WINDOW_HEIGHT) / 2) pitch += sensitivity;
-
 
 	// make sure that when pitch is out of bounds, screen doesn't get flipped
 	if (pitch > 89.0f)
@@ -300,22 +303,21 @@ void specialCallback(int key, int mouse_x, int mouse_y){
 	glutPostWindowRedisplay(glutGetWindow());
 }
 
+
+//USED FOR MODIFY FOV ( ZOOM )
 void mouse_wheel_Callback(int wheel, int direction, int x, int y) {
 	if (direction == 1) gFov += 1.0f;
 	else gFov -= 1.0f;
-
 	set_projection_matrix();
 }
 
-//When mouse a button is pressed down
+//When a mouse button is pressed down
 void mouse_callback(int button, int state, int x, int y) {
 	if (state == GLUT_DOWN) {
 		gMouseX = x;
 		gMouseY = y;
 	}
 }
-
-
 
 
 void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
@@ -329,7 +331,6 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 		case 'N' : gNear += step; set_projection_matrix(); break;
 		case 'f' : gFar -= step; set_projection_matrix(); break;
 		case 'F' : gFar += step; set_projection_matrix(); break;
-
 
 		//ENABLE/DISABLE CULLING
 		case 'c': {
@@ -345,6 +346,7 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 			else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}; break;
 
+		//GLOBAL CAMERA MOVMENT
 		case 'w': gCameraBackv3 += camera_speed * gCameraFrontv3; break;
 		case 's': gCameraBackv3 -= camera_speed * gCameraFrontv3; break;
 		case 'a': gCameraBackv3 -= glm::normalize(glm::cross(gCameraFrontv3, gCameraUpv3)) * camera_speed; break;
@@ -355,7 +357,9 @@ void keyboardCallback(unsigned char key, int mouse_x, int mouse_y){
 }
 
 
-void init_glut(int* argc, char** argv){
+void init(int* argc, char** argv){
+
+	//=======GLUT INIT=========
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	
 	glutInitWindowSize(600, 600);
@@ -372,9 +376,9 @@ void init_glut(int* argc, char** argv){
 	glutMouseFunc(mouse_callback);
 	glutMouseWheelFunc(mouse_wheel_Callback);
 	glutPassiveMotionFunc(mouse_passive_motion_callback);
-	
-	//glEnable(GL_CULL_FACE);
-//	glFrontFace(GL_CW);
+
+
+	//=======OPENGL INIT=======
    	glClearColor(1.0f, 0.6f, 0.1f, 1.0f); // RGBA components
 	glEnable(GL_DEPTH_TEST);
 	
@@ -399,40 +403,19 @@ First_engine::~First_engine() {
 }
 
 
-void renderSceneGraph(const Node* node, glm::mat4 model) {
-	glm::mat4 matrix_model = model * node->mModelMatrix;
-
-	if (node->hasChildren()) {
-		for (const Node* n : node->childrens) {
-			renderSceneGraph(n, matrix_model);
-		}
-	}else { // is a mesh
-		node->render();
-	}
-}
-
-void renderSceneGraph(Node* node) {
-	renderSceneGraph(node, glm::mat4{ 1.0f });
-}
-
-
 void First_engine::run(int* argc, char** argv){
 
-	Node n1;
-	Node n2;
-	Node n3;
-
 	n1.addChild(&n2);
-	n1.addChild(&n2);
-	n2.addChild(&n3);
+	n1.addChild(&n3);
+	n2.addChild(&n4);
 
-	cout << "==============" << endl;
-	n1.printChilds();
-	n2.printChilds();
-	cout << "==============" << endl;
+	n4.addChild(&c1);
+	n3.addChild(&c2);
+	n1.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	n3.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	//s.renderSceneGraph();
 
-	renderSceneGraph(&n1);
+	//renderSceneGraph(&n1);
 
-	init_globals();
-	init_glut(argc, argv);	
+	init(argc, argv);	
 } 

@@ -35,11 +35,10 @@ public:
 
 
 	//FRIENDS
-	friend void renderSceneGraph(Node*);
-	friend void renderSceneGraph(const Node*, glm::mat4);
+	friend class Scene;
 
 	//DEBUG METHODS:
-	void printChilds();
+	void printChilds() const;
 	
 protected:
 	glm::mat4 mModelMatrix{ 1.0f };
