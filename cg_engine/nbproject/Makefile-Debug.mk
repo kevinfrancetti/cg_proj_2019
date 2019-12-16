@@ -38,9 +38,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/class01.o \
 	${OBJECTDIR}/cube.o \
 	${OBJECTDIR}/first_engine.o \
-	${OBJECTDIR}/meshCube.o \
 	${OBJECTDIR}/node.o \
-	${OBJECTDIR}/object.o
+	${OBJECTDIR}/object.o \
+	${OBJECTDIR}/scene.o
 
 
 # C Compiler Flags
@@ -82,11 +82,6 @@ ${OBJECTDIR}/first_engine.o: first_engine.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/first_engine.o first_engine.cpp
 
-${OBJECTDIR}/meshCube.o: meshCube.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/meshCube.o meshCube.cpp
-
 ${OBJECTDIR}/node.o: node.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -96,6 +91,11 @@ ${OBJECTDIR}/object.o: object.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/object.o object.cpp
+
+${OBJECTDIR}/scene.o: scene.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/scene.o scene.cpp
 
 # Subprojects
 .build-subprojects:
