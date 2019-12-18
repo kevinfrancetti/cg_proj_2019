@@ -13,7 +13,6 @@
 #include <iostream>
 #include "engine.h"
 #include <GL/freeglut.h>
-#include <vector>
 
 
 //======GLOBALS=======//
@@ -80,7 +79,8 @@ void string_to_unsigned_char(unsigned char*& text, string &str) {
 }
 
 void print_info() {
-
+	
+	glDisable(GL_DEPTH_TEST);
 	//INITIAL SET UP: PROJECTION MATRIX = ORTHO AND MODELVIEW = IDENTITY
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(ortho));
@@ -185,7 +185,7 @@ void print_info() {
 	str = "PITCH: " + to_string(pitch);
 	string_to_unsigned_char(pc, str);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)message_buffer);
-
+	glEnable(GL_DEPTH_TEST);
 
 	//glEnable(GL_LIGHTING);
 }
@@ -412,7 +412,7 @@ void First_engine::run(int* argc, char** argv){
 	n4.addChild(&c1);
 	n3.addChild(&c2);
 	n1.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
-	n3.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	n3.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f)));
 	//s.renderSceneGraph();
 
 	//renderSceneGraph(&n1);

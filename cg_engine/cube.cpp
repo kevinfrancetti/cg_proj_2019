@@ -21,6 +21,7 @@ using namespace std;
 #define EDGE 0.5f
 
 //VERTEX STRATS FROM 1 TO 8
+//CUBE HAS 8 VERTEX AND FOR EACH VERTEX 3 POINTS
 #define VERTEX(x) &VERTEXES[3* ((x)-1)]
 static float VERTEXES[8 * 3] = {
 	//V1
