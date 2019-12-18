@@ -70,32 +70,32 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcg_engine.${CND_DLIB_EXT}: ${OBJEC
 ${OBJECTDIR}/class01.o: class01.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/class01.o class01.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/class01.o class01.cpp
 
 ${OBJECTDIR}/cube.o: cube.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cube.o cube.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cube.o cube.cpp
 
 ${OBJECTDIR}/first_engine.o: first_engine.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/first_engine.o first_engine.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/first_engine.o first_engine.cpp
 
 ${OBJECTDIR}/node.o: node.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/node.o node.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/node.o node.cpp
 
 ${OBJECTDIR}/object.o: object.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/object.o object.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/object.o object.cpp
 
 ${OBJECTDIR}/scene.o: scene.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/scene.o scene.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/scene.o scene.cpp
 
 # Subprojects
 .build-subprojects:

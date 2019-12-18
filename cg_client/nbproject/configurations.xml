@@ -64,6 +64,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <standard>8</standard>
           <incDir>
             <pElem>../cg_engine</pElem>
           </incDir>
