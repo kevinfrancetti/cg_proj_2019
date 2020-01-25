@@ -24,5 +24,6 @@
 #include "node.h"
 #include "cube.h"
 #include "scene.h"
+#include "camera.h"
 
 

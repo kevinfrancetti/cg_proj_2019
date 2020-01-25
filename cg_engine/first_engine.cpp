@@ -26,35 +26,21 @@ glm::mat4 ortho{ 1.0f };
 
 
 //GLOBAL CAMERA
-glm::mat4 gMatrixCamera{ 1.0f };
 glm::vec3 gCameraBackv3;
 glm::vec3 gCameraFrontv3;
 glm::vec3 gCameraUpv3{0.0f, 1.0f, 0.0f};
 
-glm::mat4 gRotationX;
-glm::mat4 gRotationY;
-float gAlpha = 0;
-float gBeta = 0;
 float yaw = 0;
 float pitch = 0;
 
 //MOUSE
-int gMouseOldX;
-int gMouseOldY;
-
 int gMouseX;
 int gMouseY;
 
-int gDeltaX;
-int gDeltaY;
-
-
-Cube gCube1{};
-Cube gCube2{};
-
-
 
 //TEST
+Cube gCube1{};
+Cube gCube2{};
 Node n1;
 Node n2;
 Node n3;
@@ -62,9 +48,6 @@ Node n4;
 Cube c1;
 Cube c2;
 Scene s{ &n1 };
-
-
-
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
 

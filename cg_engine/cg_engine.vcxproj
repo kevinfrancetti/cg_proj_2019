@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="class01.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="engine.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="scene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="class01.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="first_engine.cpp" />

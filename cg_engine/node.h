@@ -44,7 +44,6 @@ protected:
 	glm::mat4 mModelMatrix{ 1.0f };
 
 private:
-	glm::mat4 model{ 1.0f };
 	Node* parent;
 	std::vector<Node*> childrens;
 };
