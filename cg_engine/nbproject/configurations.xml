@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>camera.h</itemPath>
       <itemPath>class01.h</itemPath>
       <itemPath>cube.h</itemPath>
       <itemPath>engine.h</itemPath>
@@ -19,6 +20,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>camera.cpp</itemPath>
       <itemPath>class01.cpp</itemPath>
       <itemPath>cube.cpp</itemPath>
       <itemPath>first_engine.cpp</itemPath>
@@ -54,6 +56,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="camera.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="camera.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="class01.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="class01.h" ex="false" tool="3" flavor2="0">
@@ -108,6 +114,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="camera.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="camera.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="class01.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="class01.h" ex="false" tool="3" flavor2="0">

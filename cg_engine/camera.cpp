@@ -2,7 +2,6 @@
 #include <GL/freeglut.h>
 
 
-
 Camera::Camera() {
 }
 
@@ -13,9 +12,9 @@ Camera::~Camera() {
 
 
 
-
+//This method should register the camera motion callback
 void Camera::activateMovingCamera() {
-
+	//glutPassiveMotionFunc(mouse_passive_motion_cb);
 }
 
 

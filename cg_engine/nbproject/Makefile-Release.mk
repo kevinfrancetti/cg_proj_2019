@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/camera.o \
 	${OBJECTDIR}/class01.o \
 	${OBJECTDIR}/cube.o \
 	${OBJECTDIR}/first_engine.o \
@@ -66,6 +67,11 @@ LDLIBSOPTIONS=-lglut -lGL
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcg_engine.${CND_DLIB_EXT}: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcg_engine.${CND_DLIB_EXT} ${OBJECTFILES} ${LDLIBSOPTIONS} -shared -fPIC
+
+${OBJECTDIR}/camera.o: camera.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/camera.o camera.cpp
 
 ${OBJECTDIR}/class01.o: class01.cpp
 	${MKDIR} -p ${OBJECTDIR}

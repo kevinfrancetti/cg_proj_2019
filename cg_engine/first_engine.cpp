@@ -44,7 +44,6 @@ Cube gCube2{};
 Node n1;
 Node n2;
 Node n3;
-Node n4;
 Cube c1;
 Cube c2;
 Scene s{ &n1 };
@@ -193,6 +192,7 @@ void displayCallback() {
 	glm::mat4 view = glm::lookAt(gCameraBackv3, gCameraBackv3 + gCameraFrontv3, gCameraUpv3);
 	
 	n1.setModelMatrix(n1.getModelMatrix() * rotationX * rotationY);
+	
 	s.setViewMatrix(view);
 	s.renderSceneGraph();
 	//gCube1.setModelMatrix( view * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f)));
@@ -390,12 +390,12 @@ void First_engine::run(int* argc, char** argv){
 
 	n1.addChild(&n2);
 	n1.addChild(&n3);
-	n2.addChild(&n4);
-
-	n4.addChild(&c1);
+	
+	n2.addChild(&c1);
 	n3.addChild(&c2);
-	n1.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
-	n3.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f)));
+	
+	n1.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f)));
+	n3.setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.0f, 0.0f)));
 	//s.renderSceneGraph();
 
 	//renderSceneGraph(&n1);
